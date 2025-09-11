@@ -120,7 +120,7 @@ cull_mask = 1047553
 fov = 80.0
 
 [node name="gun" type="MeshInstance3D" parent="player/head/Camera3D"]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.285929, -0.7, -0.859986)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.285929, -0.409374, -1.0708)
 mesh = SubResource("CylinderMesh_jyhfs")
 skeleton = NodePath("../../..")
 
@@ -139,7 +139,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.53646, 1.81262, 0.0116854)
 script = ExtResource("4_e124b")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="enemy"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.01092, 0.524342, 1.02175)
 mesh = SubResource("CapsuleMesh_1bvp3")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="enemy"]
