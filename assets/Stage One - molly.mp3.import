@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://b4kyjxjd6kma6"
+path="res://.godot/imported/Stage One - molly.mp3-1837d4f50e1ef1f6535022c33e5db41f.mp3str"
+
+[deps]
+
+source_file="res://assets/Stage One - molly.mp3"
+dest_files=["res://.godot/imported/Stage One - molly.mp3-1837d4f50e1ef1f6535022c33e5db41f.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

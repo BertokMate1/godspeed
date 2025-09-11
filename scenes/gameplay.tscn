@@ -1,0 +1,177 @@
+[gd_scene load_steps=18 format=3 uid="uid://bo3u2fs6q3awm"]
+
+[ext_resource type="Script" uid="uid://k6bxev3bf0c5" path="res://scripts/main.gd" id="1_ocj2s"]
+[ext_resource type="Texture2D" uid="uid://q1ip52uhuxt8" path="res://assets/texture_07.png" id="2_ocj2s"]
+[ext_resource type="Script" uid="uid://cqpfpawedmfer" path="res://scripts/player.gd" id="3_4bh5q"]
+[ext_resource type="Script" uid="uid://dww14180ykl1t" path="res://scripts/enemy.gd" id="4_e124b"]
+[ext_resource type="Script" uid="uid://dv2ybi44o5wy8" path="res://scripts/panel.gd" id="5_101mb"]
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_h2yge"]
+vertices = PackedVector3Array(49.25, 0.25, 0.25, 0.25, 0.25, -49.25, -49.25, 0.25, -0.25, -35, 0.25, 34.75, -0.25, 0.25, 49.25, 34.75, 0.25, 35, -34.75, 0.25, -35, 35, 0.25, -34.75)
+polygons = [PackedInt32Array(5, 4, 0), PackedInt32Array(0, 4, 3), PackedInt32Array(0, 3, 2), PackedInt32Array(0, 2, 1), PackedInt32Array(2, 6, 1), PackedInt32Array(1, 7, 0)]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tefeu"]
+albedo_texture = ExtResource("2_ocj2s")
+uv1_triplanar = true
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7dm0k"]
+
+[sub_resource type="Sky" id="Sky_ig7tw"]
+sky_material = SubResource("ProceduralSkyMaterial_7dm0k")
+
+[sub_resource type="Environment" id="Environment_0xm2m"]
+background_mode = 2
+sky = SubResource("Sky_ig7tw")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0xm2m"]
+height = 1.8
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ig7tw"]
+height = 1.2
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_jyhfs"]
+top_radius = 0.2
+bottom_radius = 0.2
+height = 0.1
+
+[sub_resource type="PrismMesh" id="PrismMesh_tbgi4"]
+size = Vector3(0.3, 0.5, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tbgi4"]
+albedo_color = Color(1, 0.423529, 0.25098, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_1bvp3"]
+material = SubResource("StandardMaterial3D_tbgi4")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lquwl"]
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_ocj2s")
+
+[node name="stage" type="Node3D" parent="."]
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="stage"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.512303, 0)
+navigation_mesh = SubResource("NavigationMesh_h2yge")
+navigation_layers = 1023
+
+[node name="Floor" type="CSGCylinder3D" parent="stage/NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00140572, -0.512303, 0)
+layers = 3
+use_collision = true
+radius = 50.0
+height = 1.0
+material = SubResource("StandardMaterial3D_tefeu")
+
+[node name="wall" type="CSGCylinder3D" parent="stage/NavigationRegion3D"]
+layers = 2
+use_collision = true
+radius = 51.0
+height = 5.0
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="stage/NavigationRegion3D/wall"]
+operation = 2
+radius = 50.0
+height = 5.0
+
+[node name="env" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="env"]
+environment = SubResource("Environment_0xm2m")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="env"]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, -0.0518627, 8.04932, -1.87452)
+light_bake_mode = 1
+shadow_enabled = true
+
+[node name="player" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.47, 1.8, -1.05)
+script = ExtResource("3_4bh5q")
+
+[node name="standing_collision_shape" type="CollisionShape3D" parent="player"]
+shape = SubResource("CapsuleShape3D_0xm2m")
+debug_color = Color(0.678431, 0.254902, 1, 0.917647)
+
+[node name="crouching_collision_shape" type="CollisionShape3D" parent="player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.309964, 0)
+shape = SubResource("CapsuleShape3D_ig7tw")
+debug_color = Color(0, 0.0145753, 0.0174971, 0.984314)
+
+[node name="hitbox" type="Area3D" parent="player"]
+
+[node name="standing_collision_shape" type="CollisionShape3D" parent="player/hitbox"]
+shape = SubResource("CapsuleShape3D_0xm2m")
+debug_color = Color(0.678431, 0.254902, 1, 0.917647)
+
+[node name="crouching_collision_shape" type="CollisionShape3D" parent="player/hitbox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.309964, 0)
+shape = SubResource("CapsuleShape3D_ig7tw")
+debug_color = Color(0, 0.0145753, 0.0174971, 0.984314)
+
+[node name="head" type="Node3D" parent="player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+
+[node name="Camera3D" type="Camera3D" parent="player/head"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
+cull_mask = 1047553
+fov = 80.0
+
+[node name="gun" type="MeshInstance3D" parent="player/head/Camera3D"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.285929, -0.7, -0.859986)
+mesh = SubResource("CylinderMesh_jyhfs")
+skeleton = NodePath("../../..")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="player/head/Camera3D/gun"]
+transform = Transform3D(-2.04761e-15, 1, 7.45058e-08, 4.37114e-08, 7.45058e-08, -1, -1, 6.16922e-16, -4.37114e-08, 0.334953, 0, 0)
+mesh = SubResource("PrismMesh_tbgi4")
+
+[node name="position" type="Node3D" parent="player/head/Camera3D/gun"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.638184, 0, 0)
+
+[node name="RayCast3D" type="RayCast3D" parent="player"]
+target_position = Vector3(0, 2, 0)
+
+[node name="enemy" type="CharacterBody3D" parent="." groups=["enemy"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.53646, 1.81262, 0.0116854)
+script = ExtResource("4_e124b")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="enemy"]
+mesh = SubResource("CapsuleMesh_1bvp3")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="enemy"]
+shape = SubResource("CapsuleShape3D_lquwl")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="enemy"]
+
+[node name="enemyspawntimer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[node name="timer" type="Panel" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -5.0
+offset_right = 48.0
+offset_bottom = 23.0
+grow_horizontal = 2
+script = ExtResource("5_101mb")
+
+[node name="seconds" type="Label" parent="timer"]
+layout_mode = 0
+offset_left = 1.0
+offset_right = 26.0
+offset_bottom = 23.0
+text = "00:"
+horizontal_alignment = 2
+
+[node name="msec" type="Label" parent="timer"]
+layout_mode = 0
+offset_left = 29.0
+offset_right = 52.0
+offset_bottom = 23.0
+text = "00:"
+horizontal_alignment = 2

@@ -1,0 +1,141 @@
+[gd_scene load_steps=8 format=3 uid="uid://ccogh6rhkli2d"]
+
+[ext_resource type="FontFile" uid="uid://bamjgb7ur3lck" path="res://assets/OverObsessedGirlfriend.ttf" id="1_5mbse"]
+[ext_resource type="Script" uid="uid://2rhqnrkhlwih" path="res://scripts/mainmenu.gd" id="1_r3g3c"]
+[ext_resource type="Texture2D" uid="uid://bidum8m5wt8fs" path="res://assets/xd-transformed.png" id="2_3vvtq"]
+[ext_resource type="FontFile" uid="uid://dicgkvogf2358" path="res://assets/LibreBaskerville-Bold.ttf" id="3_s5g8n"]
+[ext_resource type="AudioStream" uid="uid://b4kyjxjd6kma6" path="res://assets/Stage One - molly.mp3" id="5_s5g8n"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_r3g3c"]
+texture = ExtResource("2_3vvtq")
+modulate_color = Color(0.336608, 0.336608, 0.336608, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5mbse"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+shadow_color = Color(0.964742, 0.964742, 0.964742, 0.6)
+shadow_size = 5
+
+[node name="mainmenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_r3g3c")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_r3g3c")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -504.0
+offset_top = -14.5
+offset_right = 504.0
+offset_bottom = 14.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 150
+
+[node name="play" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+size_flags_stretch_ratio = 19.49
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_s5g8n")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_5mbse")
+text = "PLAY"
+
+[node name="options" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+size_flags_stretch_ratio = 19.49
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_s5g8n")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_5mbse")
+text = "OPTIONS"
+
+[node name="leaderboards" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+size_flags_stretch_ratio = 19.49
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_s5g8n")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_5mbse")
+text = "LEADERBOARDS"
+
+[node name="exit" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+size_flags_stretch_ratio = 19.49
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_s5g8n")
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_5mbse")
+text = "EXIT
+"
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -98.0
+offset_top = 38.0
+offset_right = 98.0
+offset_bottom = 135.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("1_5mbse")
+theme_override_font_sizes/font_size = 100
+text = "GOD"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -107.5
+offset_top = 502.0
+offset_right = 107.5
+offset_bottom = 599.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("1_5mbse")
+theme_override_font_sizes/font_size = 100
+text = "SPEED"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_s5g8n")
+volume_db = -30.0
+autoplay = true
+
+[connection signal="ready" from="." to="." method="_on_ready"]
+[connection signal="pressed" from="HBoxContainer/play" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="HBoxContainer/options" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="HBoxContainer/leaderboards" to="." method="_on_leaderboards_pressed"]
+[connection signal="pressed" from="HBoxContainer/exit" to="." method="_on_exit_pressed"]
