@@ -124,20 +124,21 @@ func _physics_process(delta: float) -> void:
 		velocity.y = JUMP_VELOCITY
 		sliding = false
 		
-	# Bullet shooting (scuffed)
+	# Bullet shooting
 	if Input.is_action_just_pressed("click"):
 	# Check if the pos node is valid and in the tree
 		if pos and pos.is_inside_tree():
 			var instance = bullet.instantiate()
 		
-		# Set the direction directly on the instance before adding to scene
-			instance.direction = +pos.global_transform.basis.x.normalized()
-		
-		# Add to scene tree
+		# Add to scene tree first
 			get_parent().add_child(instance)
 		
-		# Set position after adding to scene (using call_deferred to ensure tree integration)
-			instance.call_deferred("set_global_position", pos.global_position)
+		# Set position and rotation after adding to scene
+			instance.global_position = pos.global_position
+			instance.global_rotation = pos.global_rotation
+		
+		# Set direction based on the bullet's forward vector
+			instance.direction = instance.global_transform.basis.x.normalized()
 
 
 	#MOVEMENT LERP SO ITS NOT SUPER RESPONSIVE (FEELS BETTER IG?)
