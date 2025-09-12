@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://covihcvkxelir"]
+
+[ext_resource type="Script" uid="uid://da1luuxt6ve82" path="res://scripts/spectralwaver.gd" id="1_81ot2"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dtp8m"]
+albedo_color = Color(0.0431373, 0.701961, 1, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_ad8tl"]
+material = SubResource("StandardMaterial3D_dtp8m")
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_dtp8m"]
+radius = 0.531883
+
+[node name="spectral_waver" type="CharacterBody3D" groups=["enemy"]]
+script = ExtResource("1_81ot2")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+
+[node name="AttackCooldown" type="Timer" parent="."]
+
+[node name="TeleportCooldown" type="Timer" parent="."]
+wait_time = 2.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_ad8tl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_dtp8m")

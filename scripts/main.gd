@@ -16,7 +16,9 @@ var random_offset = Vector3(
 	sin(random_angle) * current_radius
 )
 
-var enemy_scene = preload("res://scenes/enemy.tscn")
+#enemies
+var enemy_scene = preload("res://scenes/charger.tscn")
+var spectral_waver_scene = preload("res://scenes/spectral_waver.tscn")
 
 func _ready() -> void:
 	spawn_timer.timeout.connect(_on_spawn_timer_timeout)
@@ -28,9 +30,15 @@ func _on_spawn_timer_timeout():
 	spawn_enemy()
 	
 func spawn_enemy():
-	var enemy = enemy_scene.instantiate()
+	var enemy
+	
+	if randf() > 0.5:
+		enemy = spectral_waver_scene.instantiate()
+	else:
+		enemy = enemy_scene.instantiate()
 	
 	add_child(enemy)
+	
 	enemy.call_deferred("set_global_position", target.global_position + random_offset)
 	
 	enemy.add_to_group("enemy")

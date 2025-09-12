@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://dw6thfiyat2pe"]
+
+[ext_resource type="Script" uid="uid://gx6hsnbs2eq7" path="res://scripts/energy_projectile.gd" id="1_lumvv"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_ivem7"]
+radius = 0.2
+height = 0.2
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_lumvv"]
+radius = 0.220689
+
+[node name="energy_projectile" type="Area3D" groups=["bullet"]]
+script = ExtResource("1_lumvv")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_ivem7")
+
+[node name="LifetimeTimer" type="Timer" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_lumvv")
