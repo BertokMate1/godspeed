@@ -2,18 +2,19 @@ extends CharacterBody3D
 
 # Enemy properties
 var health = 50
-var speed = 3.0
 var player_detection_range = 20.0
-var too_close_range = 5.0
-var attack_range = 15.0
+var too_close_range = 8.0
 var attack_cooldown = 3.0
 var can_attack = true
 var teleport_cooldown = 2.0
 var can_teleport = true
+var min_height = 1.5  # Minimum height
+var max_height = 3.5  # Maximum height
+var min_teleport_distance = 10.0  # Minimum distance from player
+var max_teleport_distance = 15.0  # Maximum distance from player
 
 # Navigation
 @onready var nav_agent = $NavigationAgent3D
-var gravity = 9.8
 
 # Projectile
 var projectile_scene = preload("res://scenes/energy_projectile.tscn")
@@ -33,71 +34,62 @@ func _ready():
 	
 	# Start with a random attack cooldown offset
 	attack_cooldown = randf_range(2.0, 4.0)
+	
+	# Set initial random position
+	teleport_to_random_position()
 
 func _physics_process(delta):
 	if not is_inside_tree() or player == null:
 		return
 		
-	# Handle gravity
-	if not is_on_floor():
-		velocity.y -= gravity * delta
-		
 	# Check if player is too close (teleport condition)
 	var distance_to_player = global_position.distance_to(player.global_position)
-	if distance_to_player < too_close_range and can_teleport:
-		teleport_away()
-		
-	# Move toward player but maintain distance
-	if distance_to_player > attack_range:
-		# Move toward player
-		nav_agent.target_position = player.global_position
-		var next_pos = nav_agent.get_next_path_position()
-		var dir = (next_pos - global_position).normalized()
-		velocity.x = dir.x * speed
-		velocity.z = dir.z * speed
-	else:
-		# Stop moving when in attack range
-		velocity.x = 0
-		velocity.z = 0
-		
-		# Attack if cooldown is ready
-		if can_attack:
-			attack()
 	
-	move_and_slide()
+	if distance_to_player < too_close_range and can_teleport:
+		teleport_to_random_position()
+		
+	# Attack regardless of distance (infinite range)
+	if can_attack:
+		attack()
 
 func attack():
 	can_attack = false
+	
 	# Create and launch projectile
 	var projectile = projectile_scene.instantiate()
 	get_parent().add_child(projectile)
-	projectile.global_position = global_position + Vector3(0, 1, 0)  # Shoot from slightly above
+	
+	# Set projectile position and direction
+	projectile.global_position = global_position + Vector3(0, 0.5, 0)  # Shoot from slightly above
 	projectile.direction = (player.global_position - global_position).normalized()
 	
 	# Start cooldown timer
 	$AttackCooldown.start(attack_cooldown)
 
-func teleport_away():
+func teleport_to_random_position():
 	can_teleport = false
 	$TeleportCooldown.start(teleport_cooldown)
 	
-	# Calculate a position away from the player but within navigation bounds
-	var direction_away = (global_position - player.global_position).normalized()
-	var teleport_distance = randf_range(8.0, 12.0)
-	var target_position = global_position + direction_away * teleport_distance
+	# Calculate a random distance from the player
+	var teleport_distance = randf_range(min_teleport_distance, max_teleport_distance)
 	
-	# Ensure the target position is at least at ground level
-	target_position.y = max(target_position.y, 0.5)  # Don't go below ground level
+	# Calculate random angles for spherical coordinates
+	var theta = randf() * 2 * PI  # Horizontal angle
+	var phi = randf() * PI        # Vertical angle
 	
-	# Use NavigationAgent to find a valid position on the navigation mesh
-	nav_agent.target_position = target_position
-	var valid_position = nav_agent.get_next_path_position()
+	# Convert spherical coordinates to Cartesian coordinates
+	var offset_x = teleport_distance * sin(phi) * cos(theta)
+	var offset_y = teleport_distance * cos(phi)
+	var offset_z = teleport_distance * sin(phi) * sin(theta)
 	
-	# Add a small vertical offset to ensure we're above ground
-	valid_position.y += 0.5
+	# Calculate target position relative to player
+	var target_position = player.global_position + Vector3(offset_x, offset_y, offset_z)
 	
-	# Teleport to the validated position
-	global_position = valid_position
+	# Ensure Y position stays within reasonable bounds
+	target_position.y = clamp(target_position.y, min_height, max_height)
+	
+	# Teleport directly to the calculated position
+	global_position = target_position
 
 func take_damage(amount):
 	health -= amount

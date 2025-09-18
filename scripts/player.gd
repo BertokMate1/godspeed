@@ -44,18 +44,23 @@ var direction = Vector3.ZERO
 # BULLET
 var bullet = load("res://scenes/bullet.tscn")
 
+# HEALTH
+var health = 100
+
 # MOUSE CAPTURING FOR CAMERA
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	
+	# Connect hitbox signals
 	$hitbox.body_entered.connect(_on_hitbox_body_entered)
+	
+	# Add to player group for enemy targeting
+	add_to_group("player")
 	
 func _on_hitbox_body_entered(body):
 	if body.is_in_group("enemy"):
-		is_dead = true
-		print("dead")
-		get_tree().quit()
-		
+		take_damage(100)  # Instant death from enemy contact
+
 # MOUSE MOVEMENT FOR CAMERA AND +-89 DEGREE SO IT CANT ROTATE FULLY AROUND
 func _input(event):
 	if event is InputEventMouseMotion:
@@ -65,6 +70,9 @@ func _input(event):
 			
 # THE MOVEMENTS START HERE
 func _physics_process(delta: float) -> void:
+	if is_dead:
+		return
+		
 	# Check if player is still in the scene tree
 	if not is_inside_tree():
 		return
@@ -160,3 +168,17 @@ func _physics_process(delta: float) -> void:
 		velocity.z = move_toward(velocity.z, 0, current_speed)
 
 	move_and_slide()
+
+# Damage system
+func take_damage(amount):
+	if is_dead:
+		return
+		
+	health -= amount
+	
+	if health <= 0:
+		die()
+
+func die():
+	is_dead = true
+	get_tree().quit()
