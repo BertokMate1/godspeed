@@ -7,14 +7,29 @@ extends CharacterBody3D
 @onready var ray_cast_3d: RayCast3D = $RayCast3D
 @onready var pos = $head/Camera3D/gun/position
 
+# SPEED COUNTER VARIABLES - ADDED THIS SECTION
+var speed_counter = 0.0
+var max_speed = 0.0
+@onready var speed_label = $SpeedLabel
+
 # EXPORTED VARIABLES
 @export var mouse_sens = 0.25
 
 # SPEED VARIABLES
-var current_speed = 5.0
-const walking_speed = 5.0
-const sprinting_speed = 8.0
-const crouching_speed = 3.0
+var current_speed = 7.0
+
+var walking_speed = 7.0
+var sprinting_speed = 8.5
+var ground_accel = 20
+var ground_decel = 10
+var ground_friction = 6
+
+var crouching_speed = 3.0
+
+#AIR MOVEMENT
+var air_cap = 0.85
+var air_accel = 1200.0
+var air_move_speed = 600.0
 
 # STATES
 var walking = false
@@ -22,6 +37,7 @@ var sprinting = false
 var crouching = false
 var sliding = false
 var is_dead = false
+var auto_bhop = true
 
 # SLIDE VARIABLES
 var slide_timer = 0.0
@@ -33,7 +49,7 @@ var slide_speed = 20
 var lerp_speed = 10
 
 # JUMP VARIABLE(S)
-const JUMP_VELOCITY = 4.5
+const JUMP_VELOCITY = 5.0
 
 # CROUCH VARIABLE(S)
 var crouching_depth = -0.5
@@ -57,6 +73,31 @@ func _ready():
 	# Add to player group for enemy targeting
 	add_to_group("player")
 	
+	# Create speed label if it doesn't exist - ADDED THIS
+	if not has_node("SpeedLabel"):
+		var label = Label.new()
+		label.name = "SpeedLabel"
+		label.text = "Speed: 0.0"
+		
+		# Center the label in the middle of screen, slightly below center
+		var viewport_size = get_viewport().get_visible_rect().size
+		label.position = Vector2(viewport_size.x/2 - 50, viewport_size.y/2 + 200)
+		
+		label.add_theme_color_override("font_color", Color(1, 1, 1))
+		label.add_theme_font_size_override("font_size", 14)  # Make it a bit larger
+		
+		get_tree().root.add_child(label)
+		speed_label = label
+	
+	# Connect to viewport resize signal to keep label centered
+	get_viewport().connect("size_changed", Callable(self, "_on_viewport_resize"))
+	
+func _on_viewport_resize():
+	# Recenter the label when viewport size changes
+	if speed_label:
+		var viewport_size = get_viewport().get_visible_rect().size
+		speed_label.position = Vector2(viewport_size.x/2 - 100, viewport_size.y/2 + 50)
+	
 func _on_hitbox_body_entered(body):
 	if body.is_in_group("enemy"):
 		take_damage(100)  # Instant death from enemy contact
@@ -68,6 +109,38 @@ func _input(event):
 		head.rotate_z(deg_to_rad(-event.relative.y * mouse_sens))
 		head.rotation.z = clamp(head.rotation.z, deg_to_rad(-89), deg_to_rad(89))
 			
+			
+func _handle_ground_physics(delta) -> void:
+	#basically the air physics but on ground
+	var cur_ground_speed_in_direction = self.velocity.dot(direction)
+	var add_speed_till_cap = current_speed - cur_ground_speed_in_direction
+	if add_speed_till_cap > 0:
+		var accel_speed = ground_accel * delta * current_speed
+		accel_speed = min(accel_speed, add_speed_till_cap)
+		self.velocity += accel_speed * direction
+		
+	#apply friction
+	var control = max(self.velocity.length(), ground_decel)
+	var drop = control * ground_friction * delta
+	var new_speed = max(self.velocity.length() - drop, 0.0)
+	if self.velocity.length() > 0:
+		new_speed /= self.velocity.length()
+	self.velocity *= new_speed
+	
+	#also gravity duh
+func _handle_air_physics(delta) -> void:
+	self.velocity.y -= ProjectSettings.get_setting("physics/3d/default_gravity") * delta
+	
+	var cur_air_speed_in_direction = self.velocity.dot(direction)
+	#WISH SPEED ( IF DIRECTION> 0 LENGTH) CAPPED TO AIR_CAP
+	var capped_speed = min((air_move_speed * direction).length(), air_cap)
+	#HOW MUCH TO GET TO THE SPEED OF THE PLAYER WISHES
+	var add_speed_till_cap = capped_speed - cur_air_speed_in_direction
+	if add_speed_till_cap > 0:
+		var accel_speed = air_accel * air_move_speed * delta
+		accel_speed = min(accel_speed, add_speed_till_cap)
+		self.velocity += accel_speed * direction
+	
 # THE MOVEMENTS START HERE
 func _physics_process(delta: float) -> void:
 	if is_dead:
@@ -76,6 +149,18 @@ func _physics_process(delta: float) -> void:
 	# Check if player is still in the scene tree
 	if not is_inside_tree():
 		return
+	
+	# CALCULATE SPEED - ADDED THIS SECTION
+	var horizontal_velocity = Vector3(velocity.x, 0, velocity.z)
+	speed_counter = horizontal_velocity.length()
+	
+	# Update max speed
+	if speed_counter > max_speed:
+		max_speed = speed_counter
+	
+	# Update speed display
+	if speed_label:
+		speed_label.text = "Speed: " + str(snapped(speed_counter, 0.1)) + " u/s\nMax: " + str(snapped(max_speed, 0.1)) + " u/s"
 	
 	# GETTING MOVEMENT INPUT FIRST THING IN THE MORNIN' (SO IT CAN BE USED LATER)
 	var input_dir := Input.get_vector("backward", "forward", "left", "right")
@@ -123,14 +208,16 @@ func _physics_process(delta: float) -> void:
 		if 0 >= slide_timer:
 			sliding = false
 	
-	# Add the gravity
-	if not is_on_floor():
-		velocity += get_gravity() * delta
-
 	# Handle jump
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
-		sliding = false
+	if is_on_floor():
+		if Input.is_action_just_pressed("jump") or (auto_bhop and Input.is_action_pressed("jump")):
+			self.velocity.y = JUMP_VELOCITY
+			sliding = false
+		_handle_ground_physics(delta)
+	else:
+		_handle_air_physics(delta)
+			
+	move_and_slide()
 		
 	# Bullet shooting
 	if Input.is_action_just_pressed("click"):
@@ -181,4 +268,7 @@ func take_damage(amount):
 
 func die():
 	is_dead = true
+	# Remove speed label when player dies
+	if speed_label and speed_label.is_inside_tree():
+		speed_label.queue_free()
 	get_tree().quit()

@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://ben3l58je544v"]
+
+[ext_resource type="Script" uid="uid://do174045n1hdx" path="res://scripts/echo_wraith.gd" id="1_ifdrk"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_534x2"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ifdrk"]
+
+[node name="EchoWraith" type="CharacterBody3D"]
+script = ExtResource("1_ifdrk")
+
+[node name="BodyMesh" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_534x2")
+
+[node name="CollisionShape" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_ifdrk")
+
+[node name="NavigationAgent" type="NavigationAgent3D" parent="."]
+
+[node name="SwapTimer" type="Timer" parent="."]

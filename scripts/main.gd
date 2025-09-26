@@ -19,6 +19,7 @@ var random_offset = Vector3(
 #enemies
 var enemy_scene = preload("res://scenes/charger.tscn")
 var spectral_waver_scene = preload("res://scenes/spectral_waver.tscn")
+var echo_wraith_scene = preload("res://scenes/echo_wraith.tscn")
 
 func _ready() -> void:
 	spawn_timer.timeout.connect(_on_spawn_timer_timeout)
@@ -32,7 +33,9 @@ func _on_spawn_timer_timeout():
 func spawn_enemy():
 	var enemy
 	
-	if randf() > 0.5:
+	if randf() > 0.2:
+		enemy = echo_wraith_scene.instantiate()
+	elif randf() > 0.5:
 		enemy = spectral_waver_scene.instantiate()
 	else:
 		enemy = enemy_scene.instantiate()
@@ -41,6 +44,8 @@ func spawn_enemy():
 	
 	enemy.call_deferred("set_global_position", target.global_position + random_offset)
 	
+	if enemy.has_method("is_real") && enemy.is_real:
+		enemy.add_to_group("echo_wraith")
 	enemy.add_to_group("enemy")
 	
 	
