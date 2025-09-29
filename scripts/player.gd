@@ -232,7 +232,27 @@ func take_damage(amount):
 
 func die():
 	is_dead = true
-	# Remove speed label when player dies
+	
+	get_node("../timer").stop()
+	
+	var death_message_scene = preload("res://scenes/death_message.tscn")
+	var death_message = death_message_scene.instantiate()
+	get_tree().root.add_child(death_message)
+	
+	
 	if speed_label and speed_label.is_inside_tree():
 		speed_label.queue_free()
-	get_tree().quit()
+	
+	var timer = Timer.new()
+	add_child(timer)
+	timer.wait_time = 0.5
+	timer.one_shot = true
+	timer.timeout.connect(transition_to_main_menu)
+	timer.start()
+
+func transition_to_main_menu():
+	var transition_scene = preload("res://scenes/scene_transition.tscn")
+	var transition = transition_scene.instantiate()
+	get_tree().root.add_child(transition)
+	
+	await transition.fade_to_main_menu()
