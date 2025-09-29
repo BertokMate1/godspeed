@@ -1,23 +1,16 @@
-[gd_scene load_steps=8 format=3 uid="uid://ccogh6rhkli2d"]
+[gd_scene load_steps=9 format=3 uid="uid://ccogh6rhkli2d"]
 
 [ext_resource type="FontFile" uid="uid://bamjgb7ur3lck" path="res://assets/OverObsessedGirlfriend.ttf" id="1_5mbse"]
 [ext_resource type="Script" uid="uid://2rhqnrkhlwih" path="res://scripts/mainmenu.gd" id="1_r3g3c"]
 [ext_resource type="Texture2D" uid="uid://bidum8m5wt8fs" path="res://assets/xd-transformed.png" id="2_3vvtq"]
 [ext_resource type="FontFile" uid="uid://dicgkvogf2358" path="res://assets/LibreBaskerville-Bold.ttf" id="3_s5g8n"]
+[ext_resource type="StyleBox" uid="uid://b7myo0qhoktmv" path="res://assets/stylebox.tres" id="4_7yvfd"]
+[ext_resource type="StyleBox" uid="uid://cd6io33ry31l" path="res://assets/styleboxhover.tres" id="5_dfy5j"]
 [ext_resource type="AudioStream" uid="uid://b4kyjxjd6kma6" path="res://assets/Stage One - molly.mp3" id="5_s5g8n"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_r3g3c"]
 texture = ExtResource("2_3vvtq")
 modulate_color = Color(0.336608, 0.336608, 0.336608, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5mbse"]
-bg_color = Color(0, 0, 0, 1)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
-shadow_color = Color(0.964742, 0.964742, 0.964742, 0.6)
-shadow_size = 5
 
 [node name="mainmenu" type="Control"]
 layout_mode = 3
@@ -60,7 +53,11 @@ size_flags_stretch_ratio = 19.49
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("3_s5g8n")
 theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxFlat_5mbse")
+theme_override_styles/focus = ExtResource("4_7yvfd")
+theme_override_styles/hover_pressed = ExtResource("4_7yvfd")
+theme_override_styles/hover = ExtResource("5_dfy5j")
+theme_override_styles/pressed = ExtResource("4_7yvfd")
+theme_override_styles/normal = ExtResource("4_7yvfd")
 text = "PLAY"
 
 [node name="options" type="Button" parent="HBoxContainer"]
@@ -71,7 +68,11 @@ size_flags_stretch_ratio = 19.49
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("3_s5g8n")
 theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxFlat_5mbse")
+theme_override_styles/focus = ExtResource("4_7yvfd")
+theme_override_styles/hover_pressed = ExtResource("4_7yvfd")
+theme_override_styles/hover = ExtResource("5_dfy5j")
+theme_override_styles/pressed = ExtResource("4_7yvfd")
+theme_override_styles/normal = ExtResource("4_7yvfd")
 text = "OPTIONS"
 
 [node name="leaderboards" type="Button" parent="HBoxContainer"]
@@ -82,7 +83,12 @@ size_flags_stretch_ratio = 19.49
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("3_s5g8n")
 theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxFlat_5mbse")
+theme_override_styles/focus = ExtResource("4_7yvfd")
+theme_override_styles/disabled = ExtResource("4_7yvfd")
+theme_override_styles/hover_pressed = ExtResource("4_7yvfd")
+theme_override_styles/hover = ExtResource("5_dfy5j")
+theme_override_styles/pressed = ExtResource("4_7yvfd")
+theme_override_styles/normal = ExtResource("4_7yvfd")
 text = "LEADERBOARDS"
 
 [node name="exit" type="Button" parent="HBoxContainer"]
@@ -93,7 +99,12 @@ size_flags_stretch_ratio = 19.49
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("3_s5g8n")
 theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxFlat_5mbse")
+theme_override_styles/focus = ExtResource("4_7yvfd")
+theme_override_styles/disabled = ExtResource("4_7yvfd")
+theme_override_styles/hover_pressed = ExtResource("4_7yvfd")
+theme_override_styles/hover = ExtResource("5_dfy5j")
+theme_override_styles/pressed = ExtResource("4_7yvfd")
+theme_override_styles/normal = ExtResource("4_7yvfd")
 text = "EXIT
 "
 
