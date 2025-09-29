@@ -25,9 +25,6 @@ version_control/autoload_on_startup=true
 enemy=""
 player=""
 bullet=""
-echo_wraith=""
-echo_wraith_real=""
-echo_wraith_clone=""
 
 [input]
 

@@ -8,8 +8,6 @@ var damage = 100  # Damage to player on contact
 func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y -= gravity * delta
-	else:
-		velocity.y = 0  # Reset vertical velocity when on floor
 	
 	var next_location = nav.get_next_path_position()
 	var current_location = global_transform.origin

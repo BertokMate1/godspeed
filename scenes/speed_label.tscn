@@ -1,0 +1,33 @@
+[gd_scene load_steps=3 format=3 uid="uid://bgomwjixqd8mi"]
+
+[ext_resource type="Script" uid="uid://dqsimmdmjo54p" path="res://scripts/speed_label.gd" id="1_0j201"]
+[ext_resource type="FontFile" uid="uid://dicgkvogf2358" path="res://assets/LibreBaskerville-Bold.ttf" id="1_os4vw"]
+
+[node name="SpeedLabel" type="Control"]
+layout_mode = 3
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -51.0
+offset_top = -148.0
+offset_right = -51.0
+offset_bottom = -148.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 8
+script = ExtResource("1_0j201")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = -50.0
+offset_right = 132.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(0.79262, 0.835293, 0.989475, 1)
+theme_override_fonts/font = ExtResource("1_os4vw")
+theme_override_font_sizes/font_size = 16
+text = "Speed: 0.0\\nMax: 0.0"
+horizontal_alignment = 1
+vertical_alignment = 1

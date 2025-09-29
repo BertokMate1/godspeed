@@ -3,7 +3,7 @@ extends Area3D
 var speed = 8.0
 var direction = Vector3.ZERO
 var lifetime = 5.0
-var damage = 100  # Set to high value for one-hit kill
+var damage = 100  
 
 func _ready():
 	# Set lifetime timer

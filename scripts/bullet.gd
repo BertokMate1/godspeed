@@ -1,9 +1,9 @@
 extends CharacterBody3D
 
-var speed = 30.0
+var speed = 40.0
 var direction = Vector3.ZERO
 
-# Optional initialization function
+# Initialization function
 func initialize_bullet(start_position: Vector3, shoot_direction: Vector3):
 	global_position = start_position
 	direction = shoot_direction

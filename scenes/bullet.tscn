@@ -19,7 +19,7 @@ albedo_color = Color(0, 0.898018, 0.862238, 1)
 material = SubResource("StandardMaterial3D_y25gk")
 size = Vector3(0.1, 0.1, 0.3)
 
-[node name="Bullet" type="CharacterBody3D"]
+[node name="Bullet" type="CharacterBody3D" groups=["bullet"]]
 transform = Transform3D(1, 0, -1.74846e-07, 0, 1, 0, 1.74846e-07, 0, 1, 0, 0, 0)
 script = ExtResource("1_mkf8s")
 
