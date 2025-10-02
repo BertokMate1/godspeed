@@ -18,7 +18,10 @@ func _physics_process(delta):
 		return
 		
 	var collision = move_and_collide(direction * speed * delta)
+	
 	if collision:
 		if collision.get_collider().is_in_group("enemy"):
 			collision.get_collider().queue_free() # enemy disappear
+		elif collision.get_collider().is_in_group("bullet"):
+			return
 		queue_free() # bullet disappear
