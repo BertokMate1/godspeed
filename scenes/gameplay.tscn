@@ -129,6 +129,10 @@ target_position = Vector3(0, 2, 0)
 wait_time = 2.0
 autostart = true
 
+[node name="WaveSpawnTimer" type="Timer" parent="."]
+
+[node name="WaveTimer" type="Timer" parent="."]
+
 [node name="timer" type="Panel" parent="."]
 anchors_preset = 5
 anchor_left = 0.5

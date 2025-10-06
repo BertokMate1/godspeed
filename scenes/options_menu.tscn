@@ -1,0 +1,59 @@
+[gd_scene load_steps=2 format=3 uid="uid://76og7rctx7lw"]
+
+[ext_resource type="Script" uid="uid://p67tulv6x2ep" path="res://scripts/options_menu.gd" id="1_liyum"]
+
+[node name="OptionsMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_liyum")
+
+[node name="BG" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 1155.0
+offset_bottom = 644.0
+
+[node name="WaveBased" type="CheckBox" parent="."]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 30.0
+offset_right = 144.0
+offset_bottom = 73.0
+text = "WAVE BASED"
+
+[node name="TimeBased" type="CheckBox" parent="."]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 44.0
+offset_right = 149.0
+offset_bottom = 110.0
+text = "TIME BASED
+"
+
+[node name="HSlider" type="HSlider" parent="."]
+layout_mode = 0
+offset_left = 179.0
+offset_top = 21.0
+offset_right = 339.0
+offset_bottom = 78.0
+
+[node name="SensitivityLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 186.0
+offset_top = 66.0
+offset_right = 325.0
+offset_bottom = 89.0
+text = "MOUSE SENSIVITY"
+
+[node name="mainmenu" type="Button" parent="."]
+layout_mode = 0
+offset_left = 948.0
+offset_top = 569.0
+offset_right = 1115.0
+offset_bottom = 609.0
+text = "EXIT TO MAIN MENU"
+
+[connection signal="pressed" from="mainmenu" to="." method="_on_mainmenu_pressed"]

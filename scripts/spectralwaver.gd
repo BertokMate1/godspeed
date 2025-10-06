@@ -165,3 +165,12 @@ func _on_attack_cooldown_timeout():
 
 func _on_teleport_cooldown_timeout():
 	can_teleport = true
+	
+func get_health():
+	return health
+
+func set_health(new_health):
+	health = new_health
+
+func scale_health(multiplier):
+	health *= multiplier
