@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://k6bxev3bf0c5" path="res://scripts/main.gd" id="1_ocj2s"]
 [ext_resource type="Texture2D" uid="uid://q1ip52uhuxt8" path="res://assets/texture_07.png" id="2_ocj2s"]
-[ext_resource type="Script" uid="uid://cqpfpawedmfer" path="res://scripts/player.gd" id="3_4bh5q"]
-[ext_resource type="Script" uid="uid://dv2ybi44o5wy8" path="res://scripts/panel.gd" id="5_101mb"]
+[ext_resource type="Script" uid="uid://cqpfpawedmfer" path="res://scripts/player/player.gd" id="3_4bh5q"]
+[ext_resource type="Script" uid="uid://dv2ybi44o5wy8" path="res://scripts/ui/panel.gd" id="5_101mb"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_h2yge"]
 vertices = PackedVector3Array(49.25, 0.25, 0.25, 0.25, 0.25, -49.25, -49.25, 0.25, -0.25, -35, 0.25, 34.75, -0.25, 0.25, 49.25, 34.75, 0.25, 35, -34.75, 0.25, -35, 35, 0.25, -34.75)
@@ -35,8 +35,8 @@ top_radius = 0.2
 bottom_radius = 0.2
 height = 0.1
 
-[sub_resource type="PrismMesh" id="PrismMesh_tbgi4"]
-size = Vector3(0.3, 0.5, 0.1)
+[sub_resource type="TubeTrailMesh" id="TubeTrailMesh_ct7aa"]
+radius = 0.05
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1_ocj2s")
@@ -111,13 +111,13 @@ cull_mask = 1047553
 fov = 80.0
 
 [node name="gun" type="MeshInstance3D" parent="player/head/Camera3D"]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.285929, -0.409374, -1.0708)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.28592908, -0.5461042, -0.6425762)
 mesh = SubResource("CylinderMesh_jyhfs")
 skeleton = NodePath("../../..")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="player/head/Camera3D/gun"]
-transform = Transform3D(-2.04761e-15, 1, 7.45058e-08, 4.37114e-08, 7.45058e-08, -1, -1, 6.16922e-16, -4.37114e-08, 0.334953, 0, 0)
-mesh = SubResource("PrismMesh_tbgi4")
+transform = Transform3D(-2.04761e-15, 1, 7.45058e-08, 4.37114e-08, 7.45058e-08, -1, -1, 6.16922e-16, -4.37114e-08, 0.33495307, 0.008515596, 0)
+mesh = SubResource("TubeTrailMesh_ct7aa")
 
 [node name="position" type="Node3D" parent="player/head/Camera3D/gun"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.638184, 0, 0)

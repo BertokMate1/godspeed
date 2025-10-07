@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://ccogh6rhkli2d"]
 
 [ext_resource type="FontFile" uid="uid://bamjgb7ur3lck" path="res://assets/OverObsessedGirlfriend.ttf" id="1_5mbse"]
-[ext_resource type="Script" uid="uid://2rhqnrkhlwih" path="res://scripts/mainmenu.gd" id="1_r3g3c"]
+[ext_resource type="Script" uid="uid://2rhqnrkhlwih" path="res://scripts/ui/mainmenu.gd" id="1_r3g3c"]
 [ext_resource type="Texture2D" uid="uid://bidum8m5wt8fs" path="res://assets/xd-transformed.png" id="2_3vvtq"]
 [ext_resource type="FontFile" uid="uid://dicgkvogf2358" path="res://assets/LibreBaskerville-Bold.ttf" id="3_s5g8n"]
 [ext_resource type="StyleBox" uid="uid://b7myo0qhoktmv" path="res://assets/stylebox.tres" id="4_7yvfd"]

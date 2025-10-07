@@ -65,8 +65,8 @@ var direction = Vector3.ZERO
 var wishdir = Vector3.ZERO
 
 # SCENES
-var bullet = load("res://scenes/bullet.tscn")
-var speed_label_scene = preload("res://scenes/speed_label.tscn")
+var bullet = load("res://scenes/player/bullet.tscn")
+var speed_label_scene = preload("res://scenes/ui/speed_label.tscn")
 
 # MOUSE CAPTURING FOR CAMERA
 func _ready():
@@ -282,7 +282,7 @@ func die():
 	
 	get_node("../timer").stop()
 	
-	var death_message_scene = preload("res://scenes/death_message.tscn")
+	var death_message_scene = preload("res://scenes/ui/death_message.tscn")
 	var death_message = death_message_scene.instantiate()
 	get_tree().root.add_child(death_message)
 	
@@ -298,7 +298,7 @@ func die():
 	timer.start()
 
 func transition_to_main_menu():
-	var transition_scene = preload("res://scenes/scene_transition.tscn")
+	var transition_scene = preload("res://scenes/ui/scene_transition.tscn")
 	var transition = transition_scene.instantiate()
 	get_tree().root.add_child(transition)
 	

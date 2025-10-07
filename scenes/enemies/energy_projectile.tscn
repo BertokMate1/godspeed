@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://dw6thfiyat2pe"]
 
-[ext_resource type="Script" uid="uid://gx6hsnbs2eq7" path="res://scripts/energy_projectile.gd" id="1_lumvv"]
+[ext_resource type="Script" uid="uid://gx6hsnbs2eq7" path="res://scripts/enemies/energy_projectile.gd" id="1_lumvv"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lumvv"]
 albedo_color = Color(0, 0.8, 0.235294, 1)

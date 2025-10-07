@@ -7,8 +7,8 @@ extends Node3D
 @onready var navigation_region = $stage/NavigationRegion3D
 
 #ENEMIES
-var enemy_scene = preload("res://scenes/charger.tscn")
-var spectral_weaver_scene = preload("res://scenes/spectral_waver.tscn")
+var enemy_scene = preload("res://scenes/enemies/charger.tscn")
+var spectral_weaver_scene = preload("res://scenes/enemies/spectral_waver.tscn")
 
 #SPAWNING MODE
 enum SpawnMode { TIME_BASED, WAVE_BASED }
@@ -79,7 +79,7 @@ func show_options_menu():
 	if options_menu_instance != null:
 		options_menu_instance.queue_free()
 	
-	var options_menu_scene = load("res://scenes/options_menu.tscn")
+	var options_menu_scene = load("res://scenes/ui/options_menu.tscn")
 	options_menu_instance = options_menu_scene.instantiate()
 	add_child(options_menu_instance)
 

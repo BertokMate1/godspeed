@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://ct53u2xgh4r6i"]
 
-[ext_resource type="Script" uid="uid://cek64u8cridtf" path="res://scripts/death_message.gd" id="1_blk8b"]
+[ext_resource type="Script" uid="uid://cek64u8cridtf" path="res://scripts/ui/death_message.gd" id="1_blk8b"]
 [ext_resource type="FontFile" uid="uid://dicgkvogf2358" path="res://assets/LibreBaskerville-Bold.ttf" id="2_blk8b"]
 
 [node name="Control" type="Control"]

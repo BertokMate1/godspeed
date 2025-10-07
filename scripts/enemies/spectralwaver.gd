@@ -17,7 +17,7 @@ var max_teleport_distance = 15.0
 @onready var navigation_region = get_node("/root/Main/stage/NavigationRegion3D")
 
 # Projectile
-var projectile_scene = preload("res://scenes/energy_projectile.tscn")
+var projectile_scene = preload("res://scenes/enemies/energy_projectile.tscn")
 
 # References
 var player = null

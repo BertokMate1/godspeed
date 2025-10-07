@@ -50,4 +50,4 @@ func _update_sensitivity_label():
 		sensitivity_label.text = "Mouse Sensitivity: %.2f" % sensitivity_slider.value
 
 func _on_mainmenu_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/mainmenu.tscn")
+	get_tree().change_scene_to_file("res://scenes/ui/mainmenu.tscn")

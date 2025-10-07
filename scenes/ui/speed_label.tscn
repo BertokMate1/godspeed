@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bgomwjixqd8mi"]
 
-[ext_resource type="Script" uid="uid://dqsimmdmjo54p" path="res://scripts/speed_label.gd" id="1_0j201"]
+[ext_resource type="Script" uid="uid://dqsimmdmjo54p" path="res://scripts/ui/speed_label.gd" id="1_0j201"]
 [ext_resource type="FontFile" uid="uid://dicgkvogf2358" path="res://assets/LibreBaskerville-Bold.ttf" id="1_os4vw"]
 
 [node name="SpeedLabel" type="Control"]

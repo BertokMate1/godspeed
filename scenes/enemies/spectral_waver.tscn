@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://covihcvkxelir"]
 
-[ext_resource type="Script" uid="uid://da1luuxt6ve82" path="res://scripts/spectralwaver.gd" id="1_81ot2"]
+[ext_resource type="Script" uid="uid://da1luuxt6ve82" path="res://scripts/enemies/spectralwaver.gd" id="1_81ot2"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dtp8m"]
 albedo_color = Color(0.0431373, 0.701961, 1, 1)

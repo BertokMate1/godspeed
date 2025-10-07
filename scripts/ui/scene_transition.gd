@@ -7,7 +7,7 @@ func fade_to_main_menu() -> void:
 	anim_player.play("fade")
 	await anim_player.animation_finished
 
-	get_tree().change_scene_to_file("res://scenes/mainmenu.tscn")
+	get_tree().change_scene_to_file("res://scenes/ui/mainmenu.tscn")
 	
 	# Remove the fade overlay to prevent black screen
 	queue_free()
