@@ -38,10 +38,6 @@ var min_spawn_radius = 10.0
 var spawn_center = Vector3.ZERO
 var spawn_radius = 15.0
 
-#OPTION AND ESCAPE MENU REF
-var escape_menu_instance = null
-var options_menu_instance = null
-
 func _ready():
 	#TIMER SETUP
 	timer.timeout.connect(_on_spawn_timer_timeout)
