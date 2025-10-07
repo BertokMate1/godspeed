@@ -1,0 +1,45 @@
+[gd_scene load_steps=3 format=3 uid="uid://17uiuansseg4"]
+
+[ext_resource type="FontFile" uid="uid://dicgkvogf2358" path="res://assets/LibreBaskerville-Bold.ttf" id="1_vscpt"]
+[ext_resource type="Script" uid="uid://cy8kgbmukwbok" path="res://scripts/ui/escape_menu.gd" id="1_y5i2k"]
+
+[node name="Control" type="Control"]
+process_mode = 2
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_y5i2k")
+
+[node name="Pause" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -109.0
+offset_top = 45.0
+offset_right = 114.0
+offset_bottom = 105.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("1_vscpt")
+theme_override_font_sizes/font_size = 48
+text = "PAUSED"
+
+[node name="MainExit" type="Button" parent="."]
+layout_mode = 0
+offset_left = 157.0
+offset_top = 291.0
+offset_right = 387.0
+offset_bottom = 454.0
+text = "EXIT TO MAIN MENU"
+
+[node name="GameExit" type="Button" parent="."]
+layout_mode = 0
+offset_left = 479.0
+offset_top = 239.0
+offset_right = 1105.0
+offset_bottom = 524.0
+text = "EXIT GAME"
+
+[connection signal="pressed" from="MainExit" to="." method="_on_main_exit_pressed"]
+[connection signal="pressed" from="GameExit" to="." method="_on_game_exit_pressed"]

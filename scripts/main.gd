@@ -38,7 +38,8 @@ var min_spawn_radius = 10.0
 var spawn_center = Vector3.ZERO
 var spawn_radius = 15.0
 
-#OPTION MENU REF
+#OPTION AND ESCAPE MENU REF
+var escape_menu_instance = null
 var options_menu_instance = null
 
 func _ready():
@@ -63,15 +64,7 @@ func _on_sensitivity_changed(new_sensitivity):
 	var player = get_tree().get_first_node_in_group("player")
 	if player and "mouse_sens" in player:
 		player.mouse_sens = new_sensitivity
-
-#OPTIONS MENU
-func show_options_menu():
-	if options_menu_instance != null:
-		options_menu_instance.queue_free()
-	
-	var options_menu_scene = load("res://scenes/ui/options_menu.tscn")
-	options_menu_instance = options_menu_scene.instantiate()
-	add_child(options_menu_instance)
+		
 
 # SPAWN SYSTEM CONTROL
 func set_spawn_mode(mode):
@@ -179,6 +172,13 @@ func _process(delta: float) -> void:
 		if difficulty_timer >= time_between_decreases:
 			difficulty_timer = 0.0
 			increase_difficulty()
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("pause"):
+		get_tree().paused = true
+		$PauseMenu.show()
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		get_viewport().set_input_as_handled()
 
 # VALID SPAWN POSITION FINDING
 func get_nav_valid_spawn_position():
