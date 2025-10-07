@@ -3,6 +3,12 @@ extends CharacterBody3D
 var speed = 40.0
 var direction = Vector3.ZERO
 
+@onready var lifetime = $LifetimeTimer.wait_time
+
+func _ready():
+	# START LIFETIME
+	$LifetimeTimer.start(lifetime)
+	
 # Initialization function
 func initialize_bullet(start_position: Vector3, shoot_direction: Vector3):
 	global_position = start_position
@@ -25,3 +31,6 @@ func _physics_process(delta):
 		elif collision.get_collider().is_in_group("bullet"):
 			return
 		queue_free() # bullet disappear
+		
+func _on_lifetime_timer_timeout() -> void:
+	queue_free()

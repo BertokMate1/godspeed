@@ -2,11 +2,8 @@ extends CharacterBody3D
 
 # Enemy properties
 var health = 50
-var player_detection_range = 20.0
-var too_close_range = 8.0
-var attack_cooldown = 3.0
+var too_close_range = 10.0
 var can_attack = true
-var teleport_cooldown = 2.0
 var can_teleport = true
 var min_height = 2.0  # Minimum hover height
 var max_height = 4.0  # Maximum hover height
@@ -15,6 +12,8 @@ var max_teleport_distance = 15.0
 
 # Navigation reference
 @onready var navigation_region = get_node("/root/Main/stage/NavigationRegion3D")
+@onready var attack_cooldown = $AttackCooldown.wait_time
+@onready var teleport_cooldown = $TeleportCooldown.wait_time
 
 # Projectile
 var projectile_scene = preload("res://scenes/enemies/energy_projectile.tscn")
@@ -32,9 +31,6 @@ func _ready():
 	# Connect signals
 	$AttackCooldown.timeout.connect(_on_attack_cooldown_timeout)
 	$TeleportCooldown.timeout.connect(_on_teleport_cooldown_timeout)
-	
-	# Start with a random attack cooldown offset
-	attack_cooldown = randf_range(2.0, 4.0)
 	
 	# Use call_deferred to set initial height after the main script sets position
 	call_deferred("set_initial_height")

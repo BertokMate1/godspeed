@@ -7,7 +7,7 @@ extends Node3D
 @onready var navigation_region = $stage/NavigationRegion3D
 
 #ENEMIES
-var enemy_scene = preload("res://scenes/enemies/charger.tscn")
+var charger_scene = preload("res://scenes/enemies/charger.tscn")
 var spectral_weaver_scene = preload("res://scenes/enemies/spectral_waver.tscn")
 
 #SPAWNING MODE
@@ -15,7 +15,6 @@ enum SpawnMode { TIME_BASED, WAVE_BASED }
 var current_spawn_mode = SpawnMode.TIME_BASED
 
 #TIME SCALING MODE
-var base_spawn_time = 2.0
 var min_spawn_time = 0.5
 var spawn_time_decrease = 0.5
 var time_between_decreases = 3.0
@@ -26,17 +25,16 @@ var current_wave = 0
 var enemies_remaining_in_wave = 0
 var enemies_to_spawn_this_wave = 0
 var wave_in_progress = false
-var time_between_waves = 3.0
 
 #WAVE PROGRESSION
 var base_enemies_per_wave = 3
-var enemies_increase_per_wave = 2
-var max_enemies_per_wave = 30
+var enemies_increase_per_wave = 5
+var max_enemies_per_wave = 999
 var health_increase_per_wave = 0.2
 
 #SPAWN AREA
-var max_spawn_radius = 20.0
-var min_spawn_radius = 8.0
+var max_spawn_radius = 30.0
+var min_spawn_radius = 10.0
 var spawn_center = Vector3.ZERO
 var spawn_radius = 15.0
 
@@ -45,16 +43,8 @@ var options_menu_instance = null
 
 func _ready():
 	#TIMER SETUP
-	timer.wait_time = base_spawn_time
-	timer.one_shot = false
 	timer.timeout.connect(_on_spawn_timer_timeout)
-	
-	wave_timer.wait_time = time_between_waves
-	wave_timer.one_shot = true
 	wave_timer.timeout.connect(start_next_wave)
-	
-	wave_spawn_timer.wait_time = 0.5
-	wave_spawn_timer.one_shot = true
 	wave_spawn_timer.timeout.connect(_spawn_next_enemy_in_wave)
 	
 	# BASE SPAWN MODE
@@ -94,7 +84,6 @@ func set_spawn_mode(mode):
 	
 	match mode:
 		SpawnMode.TIME_BASED:
-			timer.wait_time = base_spawn_time
 			timer.start()
 		SpawnMode.WAVE_BASED:
 			current_wave = 0
@@ -159,10 +148,10 @@ func spawn_enemy():
 	var enemy
 	var enemy_type = randf()
 	
-	if enemy_type < 0.4:
+	if enemy_type < 0.5:
 		enemy = spectral_weaver_scene.instantiate()
 	else:
-		enemy = enemy_scene.instantiate()
+		enemy = charger_scene.instantiate()
 	
 	add_child(enemy)
 	
