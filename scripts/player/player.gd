@@ -14,8 +14,8 @@ extends CharacterBody3D
 var shotgun_cooldown = 0.8
 var shotgun_timer = 0.0
 var can_shoot_shotgun = true
-var pellet_count = 5  
-var spread_angle = 0.1 
+var pellet_count = 5
+var spread_angle = 0.05
 
 # SPEED VARIABLES
 var current_speed = 10.0

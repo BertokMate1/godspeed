@@ -1,5 +1,6 @@
 extends CharacterBody3D
 
+var damage = 30
 var speed = 40.0
 var direction = Vector3.ZERO
 
@@ -27,9 +28,8 @@ func _physics_process(delta):
 	
 	if collision:
 		if collision.get_collider().is_in_group("enemy"):
-			collision.get_collider().queue_free() # enemy disappear
-		elif collision.get_collider().is_in_group("bullet"):
-			return
+			if collision.get_collider().has_method("take_damage"):
+				collision.get_collider().take_damage(damage)
 		queue_free() # bullet disappear
 		
 func _on_lifetime_timer_timeout() -> void:

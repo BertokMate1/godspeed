@@ -1,7 +1,7 @@
 extends CharacterBody3D
 
 # Enemy properties
-var health = 50
+var health = 30
 var too_close_range = 10.0
 var can_attack = true
 var can_teleport = true

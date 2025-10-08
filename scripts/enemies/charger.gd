@@ -2,7 +2,7 @@ extends CharacterBody3D
 
 @onready var nav = $NavigationAgent3D
 
-var health = 50
+var health = 30
 var speed = 7.5
 var gravity = 9.8
 var damage = 100
