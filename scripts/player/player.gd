@@ -101,27 +101,33 @@ func _input(event):
 		head.rotate_z(deg_to_rad(-event.relative.y * mouse_sens))
 		head.rotation.z = clamp(head.rotation.z, deg_to_rad(-89), deg_to_rad(89))
 
+#PROPER GROUND MOVEMENT
 func _handle_ground_physics(delta) -> void:
-	# Calculate desired direction
 	var input_dir := Input.get_vector("backward", "forward", "left", "right")
 	wishdir = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	
 	# Apply ground acceleration
-	var current_speed_on_ground = velocity.dot(wishdir)
-	var add_speed = walking_speed - current_speed_on_ground
-	
-	if add_speed > 0:
-		var accel_speed = ground_accel * delta * walking_speed
-		accel_speed = min(accel_speed, add_speed)
-		velocity += accel_speed * wishdir
+	if input_dir != Vector2.ZERO:
+		var current_speed_on_ground = velocity.dot(wishdir)
+		var add_speed = walking_speed - current_speed_on_ground
+		
+		if add_speed > 0:
+			var accel_speed = ground_accel * delta * walking_speed
+			accel_speed = min(accel_speed, add_speed)
+			velocity += accel_speed * wishdir
 	
 	# Apply friction
-	var speed = Vector3(velocity.x, 0, velocity.z).length()
-	if speed != 0:
+	var horizontal_velocity = Vector3(velocity.x, 0, velocity.z)
+	var speed = horizontal_velocity.length()
+	
+	if speed > 0:
 		var control = max(speed, ground_decel)
 		var drop = control * ground_friction * delta
-		velocity.x *= (speed - drop) / speed
-		velocity.z *= (speed - drop) / speed
+		
+		# Reduce velocity while maintaining direction
+		horizontal_velocity = horizontal_velocity.normalized() * max(0, speed - drop)
+		velocity.x = horizontal_velocity.x
+		velocity.z = horizontal_velocity.z
 
 # PROPER AIR MOVEMENT
 func _handle_air_physics(delta) -> void:
