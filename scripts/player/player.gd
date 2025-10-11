@@ -82,6 +82,15 @@ func _ready():
 	var label_instance = speed_label_scene.instantiate()
 	get_tree().root.add_child(label_instance)
 	speed_label = label_instance
+	
+	# Reset player state
+	reset_player()
+	
+func reset_player():
+	health = 100
+	is_dead = false
+	set_process_input(true)
+	set_physics_process(true)
 
 func _process(delta):
 	# Handle shotgun cooldown
@@ -284,24 +293,45 @@ func take_damage(amount):
 		die()
 
 func die():
+	if is_dead:
+		return
+		
 	is_dead = true
 	
-	get_node("../timer").stop()
+	# Stop the timer
+	var survival_timer = get_tree().get_first_node_in_group("survival_timer")
+	if survival_timer and survival_timer.has_method("stop"):
+		survival_timer.stop()
+		
+	# Get survival time
+	var timer_panel = get_tree().get_first_node_in_group("survival_timer")
+	var survival_time = 0.0
+	if timer_panel and timer_panel.has_method("get_survival_time"):
+		survival_time = timer_panel.get_survival_time()
 	
-	var death_message_scene = preload("res://scenes/ui/death_message.tscn")
-	var death_message = death_message_scene.instantiate()
-	get_tree().root.add_child(death_message)
+	# Best time comparison
+	var best_time = survival_time
+	if GlobalSettings.has_method("get_best_time"):
+		var previous_best = GlobalSettings.get_best_time()
+		if previous_best > best_time:
+			best_time = previous_best
+		GlobalSettings.set_best_time(best_time)
 	
+	# Show end game screen
+	var end_screen_scene = preload("res://scenes/ui/endgamescreen.tscn")
+	var end_screen_instance = end_screen_scene.instantiate()
+	get_tree().root.add_child(end_screen_instance)
 	
+	if end_screen_instance.has_method("show_screen"):
+		end_screen_instance.show_screen(survival_time, best_time)
+	
+	# Free the speed label
 	if speed_label and speed_label.is_inside_tree():
 		speed_label.queue_free()
 	
-	var timer = Timer.new()
-	add_child(timer)
-	timer.wait_time = 0.5
-	timer.one_shot = true
-	timer.timeout.connect(transition_to_main_menu)
-	timer.start()
+	# Disable player input
+	set_process_input(false)
+	set_physics_process(false)
 
 func transition_to_main_menu():
 	var transition_scene = preload("res://scenes/ui/scene_transition.tscn")

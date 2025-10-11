@@ -19,6 +19,7 @@ script = ExtResource("1_81ot2")
 [node name="AttackCooldown" type="Timer" parent="."]
 
 [node name="TeleportCooldown" type="Timer" parent="."]
+wait_time = 4.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_ad8tl")

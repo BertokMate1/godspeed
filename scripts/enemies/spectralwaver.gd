@@ -2,7 +2,7 @@ extends CharacterBody3D
 
 # Enemy properties
 var health = 30
-var too_close_range = 10.0
+var too_close_range = 100.0
 var can_attack = true
 var can_teleport = true
 var min_height = 2.0  # Minimum hover height

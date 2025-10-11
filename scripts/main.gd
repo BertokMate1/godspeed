@@ -39,6 +39,13 @@ var spawn_center = Vector3.ZERO
 var spawn_radius = 15.0
 
 func _ready():
+	# RESET SURVIVAL TIMER
+	var timer_panel = get_tree().get_first_node_in_group("survival_timer")
+	if timer_panel and timer_panel.has_method("reset"):
+		timer_panel.reset()
+	
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	
 	#TIMER SETUP
 	timer.timeout.connect(_on_spawn_timer_timeout)
 	wave_timer.timeout.connect(start_next_wave)
