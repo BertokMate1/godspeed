@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://bcll2bo04v5cd"]
+
+[ext_resource type="Script" uid="uid://kjvxg14xykky" path="res://scripts/enemies/stander.gd" id="1_g3ix8"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fpbts"]
+size = Vector3(1, 2, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_g3ix8"]
+size = Vector3(1, 2, 1)
+
+[node name="stander" type="CharacterBody3D"]
+script = ExtResource("1_g3ix8")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_fpbts")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_g3ix8")

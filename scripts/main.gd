@@ -9,6 +9,7 @@ extends Node3D
 #ENEMIES
 var charger_scene = preload("res://scenes/enemies/charger.tscn")
 var spectral_weaver_scene = preload("res://scenes/enemies/spectral_waver.tscn")
+var stander_scene = preload("res://scenes/enemies/stander.tscn")
 
 #SPAWNING MODE
 enum SpawnMode { TIME_BASED, WAVE_BASED }
@@ -144,10 +145,12 @@ func spawn_enemy():
 	var enemy
 	var enemy_type = randf()
 	
-	if enemy_type < 0.5:
+	if enemy_type > 0.66:
 		enemy = spectral_weaver_scene.instantiate()
-	else:
+	elif enemy_type > 0.33 and enemy_type < 0.66:
 		enemy = charger_scene.instantiate()
+	else:
+		enemy = stander_scene.instantiate()
 	
 	add_child(enemy)
 	
