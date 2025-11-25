@@ -39,8 +39,12 @@ var min_spawn_radius = 10.0
 var spawn_center = Vector3.ZERO
 var spawn_radius = 15.0
 
+#PROTECTED ZONE AROUND PLAYER
+var player_protected_radius = 8.0
+var max_spawn_attempts = 20
+
 func _ready():
-	# RESET SURVIVAL TIMER
+	#RESET SURVIVAL TIMER
 	var timer_panel = get_tree().get_first_node_in_group("survival_timer")
 	if timer_panel and timer_panel.has_method("reset"):
 		timer_panel.reset()
@@ -52,7 +56,7 @@ func _ready():
 	wave_timer.timeout.connect(start_next_wave)
 	wave_spawn_timer.timeout.connect(_spawn_next_enemy_in_wave)
 	
-	# BASE SPAWN MODE
+	#BASE SPAWN MODE
 	set_spawn_mode_from_string(GlobalSettings.spawn_mode)
 	
 	#SAVE MOUSE SENS FOR PLAYER
@@ -70,7 +74,7 @@ func _on_sensitivity_changed(new_sensitivity):
 		player.mouse_sens = new_sensitivity
 		
 
-# SPAWN SYSTEM CONTROL
+#SPAWN SYSTEM CONTROL
 func set_spawn_mode(mode):
 	timer.stop()
 	wave_timer.stop()
@@ -107,12 +111,12 @@ func start_next_wave():
 	current_wave += 1
 	wave_in_progress = true
 	
-	# ENEMY CALCULATION FOR WAVES
+	#ENEMY CALCULATION FOR WAVES
 	enemies_to_spawn_this_wave = base_enemies_per_wave + (current_wave - 1) * enemies_increase_per_wave
 	enemies_to_spawn_this_wave = min(enemies_to_spawn_this_wave, max_enemies_per_wave)
 	enemies_remaining_in_wave = enemies_to_spawn_this_wave
 	
-	# START SPAWNING FOR WAVE
+	#START SPAWNING FOR WAVE
 	_spawn_next_enemy_in_wave()
 
 func _spawn_next_enemy_in_wave():
@@ -122,7 +126,7 @@ func _spawn_next_enemy_in_wave():
 	if enemies_to_spawn_this_wave > 0:
 		var enemy = spawn_enemy()
 		if enemy:
-			# ENEMY HEALTH SCALING
+			#ENEMY HEALTH SCALING
 			var health_multiplier = 1.0 + (current_wave - 1) * health_increase_per_wave
 			if enemy.has_method("scale_health"):
 				enemy.scale_health(health_multiplier)
@@ -140,7 +144,7 @@ func on_enemy_defeated():
 			wave_in_progress = false
 			wave_timer.start()
 
-# ENEMY SPAWN FUNC
+#ENEMY SPAWN FUNC
 func spawn_enemy():
 	var enemy
 	var enemy_type = randf()
@@ -158,7 +162,7 @@ func spawn_enemy():
 	enemy.global_position = spawn_position
 	enemy.add_to_group("enemy")
 	
-	# TRACKING FOR WAVE MODE
+	#TRACKING FOR WAVE MODE
 	if current_spawn_mode == SpawnMode.WAVE_BASED:
 		var enemy_ref = weakref(enemy)
 		if enemy.has_signal("tree_exiting"):
@@ -172,7 +176,7 @@ func _on_enemy_defeated(enemy_ref):
 		on_enemy_defeated()
 
 func _process(delta: float) -> void:
-	# DIFF INCREACE FOR TIME BASED
+	#DIFF INCREACE FOR TIME BASED
 	if current_spawn_mode == SpawnMode.TIME_BASED:
 		difficulty_timer += delta
 		if difficulty_timer >= time_between_decreases:
@@ -186,20 +190,74 @@ func _input(event: InputEvent) -> void:
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		get_viewport().set_input_as_handled()
 
-# VALID SPAWN POSITION FINDING
+#VALID SPAWN POSITION FINDING WITH PLAYER PROTECTION
 func get_nav_valid_spawn_position():
-	var random_angle = randf() * 2 * PI
-	var random_distance = randf_range(0, spawn_radius)
+	var player = get_tree().get_first_node_in_group("player")
+	var player_position = Vector3.ZERO
+	if player:
+		player_position = player.global_position
 	
-	var proposed_position = spawn_center + Vector3(
-		cos(random_angle) * random_distance,
-		0,
-		sin(random_angle) * random_distance
-	)
+	var attempts = 0
+	var valid_position_found = false
+	var spawn_position = Vector3.ZERO
 	
-	if navigation_region and navigation_region.has_method("get_navigation_map"):
-		var nav_map = navigation_region.get_navigation_map()
-		var correct_position = NavigationServer3D.map_get_closest_point(nav_map, proposed_position)
+	#Try multiple times to find a valid spawn position
+	while attempts < max_spawn_attempts and not valid_position_found:
+		#Generate random position in arena
+		var random_angle = randf() * 2 * PI
+		var random_distance = randf_range(min_spawn_radius, max_spawn_radius)
 		
-		correct_position.y += 1.0
-		return correct_position
+		var proposed_position = spawn_center + Vector3(
+			cos(random_angle) * random_distance,
+			0,
+			sin(random_angle) * random_distance
+		)
+		
+		#Check if position is too close to player
+		if player:
+			var distance_to_player = proposed_position.distance_to(player_position)
+			if distance_to_player < player_protected_radius:
+				attempts += 1
+				continue  #Try again if too close to player
+		
+		# Use navigation system to validate position
+		if navigation_region and navigation_region.has_method("get_navigation_map"):
+			var nav_map = navigation_region.get_navigation_map()
+			var correct_position = NavigationServer3D.map_get_closest_point(nav_map, proposed_position)
+			
+			#Double-check player distance after navigation correction
+			if player:
+				var corrected_distance_to_player = correct_position.distance_to(player_position)
+				if corrected_distance_to_player < player_protected_radius:
+					attempts += 1
+					continue  # Try again if corrected position is still too close
+			
+			correct_position.y += 1.0
+			spawn_position = correct_position
+			valid_position_found = true
+		else:
+			# Fallback without navigation
+			spawn_position = proposed_position
+			valid_position_found = true
+		
+		attempts += 1
+	
+	# If we couldn't find a valid position after max attempts, 
+	# fall back to the original method without player protection
+	if not valid_position_found:
+		var random_angle = randf() * 2 * PI
+		var random_distance = randf_range(min_spawn_radius, max_spawn_radius)
+		
+		var proposed_position = spawn_center + Vector3(
+			cos(random_angle) * random_distance,
+			0,
+			sin(random_angle) * random_distance
+		)
+		
+		if navigation_region and navigation_region.has_method("get_navigation_map"):
+			var nav_map = navigation_region.get_navigation_map()
+			var correct_position = NavigationServer3D.map_get_closest_point(nav_map, proposed_position)
+			correct_position.y += 1.0
+			return correct_position
+	
+	return spawn_position

@@ -10,6 +10,10 @@ var max_height = 4.0  # Maximum hover height
 var min_teleport_distance = 10.0
 var max_teleport_distance = 15.0
 
+# Player protected zone
+var player_protected_radius = 12
+var max_teleport_attempts = 20 
+
 # Navigation reference
 @onready var navigation_region = get_node("/root/Main/stage/NavigationRegion3D")
 @onready var attack_cooldown = $AttackCooldown.wait_time
@@ -82,12 +86,12 @@ func teleport_to_valid_position():
 	# Apply the new position
 	global_position = valid_position
 
+# Teleport position finding with player protection
 func find_valid_teleport_position():
 	var valid_position = Vector3.ZERO
 	var attempts = 0
-	var max_attempts = 15
 	
-	while attempts < max_attempts:
+	while attempts < max_teleport_attempts:
 		# Calculate random position using spherical coordinates
 		var teleport_distance = randf_range(min_teleport_distance, max_teleport_distance)
 		var theta = randf() * 2 * PI  # Horizontal angle
@@ -101,8 +105,20 @@ func find_valid_teleport_position():
 		# Calculate target position relative to player
 		var proposed_position = player.global_position + Vector3(offset_x, offset_y, offset_z)
 		
-		# Get valid position from navigation system (this gives us X and Z within bounds)
+		# Check if position is too close to player
+		var distance_to_player = proposed_position.distance_to(player.global_position)
+		if distance_to_player < player_protected_radius:
+			attempts += 1
+			continue  # Try again if too close to player
+		
+		# Get valid position from navigation system
 		var nav_valid_position = get_nav_valid_position(proposed_position)
+		
+		# Double-check player distance after navigation correction
+		distance_to_player = nav_valid_position.distance_to(player.global_position)
+		if distance_to_player < player_protected_radius:
+			attempts += 1
+			continue  # Try again if corrected position is still too close
 		
 		# Override the Y position with our random hover height instead of ground level
 		nav_valid_position.y = randf_range(min_height, max_height)
@@ -116,10 +132,17 @@ func find_valid_teleport_position():
 	
 	# Fallback if no valid position found
 	if valid_position == Vector3.ZERO:
-		# Move away from player but maintain height
+		# Move away from player but maintain height and respect protected zone
 		var direction_away = (global_position - player.global_position).normalized()
-		valid_position = global_position + (direction_away * min_teleport_distance)
+		valid_position = global_position + (direction_away * player_protected_radius * 1.5)  # Ensure outside protected zone
 		valid_position.y = randf_range(min_height, max_height)
+		
+		# Validate fallback position
+		var distance_to_player_fallback = valid_position.distance_to(player.global_position)
+		if distance_to_player_fallback < player_protected_radius:
+			# If still too close, use the minimum teleport distance
+			valid_position = player.global_position + (direction_away * min_teleport_distance)
+			valid_position.y = randf_range(min_height, max_height)
 	
 	return valid_position
 

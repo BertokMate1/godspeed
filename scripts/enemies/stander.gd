@@ -4,7 +4,7 @@ extends CharacterBody3D
 
 var health = 60
 var gravity = 9.8
-var damage = 100
+var damage = 0
 
 var player_node
 
