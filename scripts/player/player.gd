@@ -308,6 +308,9 @@ func die():
 	var survival_time = 0.0
 	if timer_panel and timer_panel.has_method("get_survival_time"):
 		survival_time = timer_panel.get_survival_time()
+		
+	GlobalSettings.add_leaderboard_entry(survival_time)
+	
 	
 	# Best time comparison
 	var best_time = survival_time
@@ -316,6 +319,11 @@ func die():
 		if previous_best > best_time:
 			best_time = previous_best
 		GlobalSettings.set_best_time(best_time)
+		
+# Get current best time for display
+	var leaderboard = GlobalSettings.get_leaderboard()
+	if leaderboard.size() > 0:
+		best_time = leaderboard[0]["time"]
 	
 	# Show end game screen
 	var end_screen_scene = preload("res://scenes/ui/endgamescreen.tscn")

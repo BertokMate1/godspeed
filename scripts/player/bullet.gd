@@ -1,7 +1,7 @@
 extends CharacterBody3D
 
 var damage = 30
-var speed = 40.0
+var speed = 50.0
 var direction = Vector3.ZERO
 
 @onready var lifetime = $LifetimeTimer.wait_time

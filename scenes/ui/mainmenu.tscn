@@ -53,11 +53,11 @@ size_flags_stretch_ratio = 19.49
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("3_s5g8n")
 theme_override_font_sizes/font_size = 30
-theme_override_styles/focus = ExtResource("4_7yvfd")
-theme_override_styles/hover_pressed = ExtResource("4_7yvfd")
-theme_override_styles/hover = ExtResource("5_dfy5j")
-theme_override_styles/pressed = ExtResource("4_7yvfd")
 theme_override_styles/normal = ExtResource("4_7yvfd")
+theme_override_styles/pressed = ExtResource("4_7yvfd")
+theme_override_styles/hover = ExtResource("5_dfy5j")
+theme_override_styles/hover_pressed = ExtResource("4_7yvfd")
+theme_override_styles/focus = ExtResource("4_7yvfd")
 text = "PLAY"
 
 [node name="options" type="Button" parent="HBoxContainer"]
@@ -68,11 +68,11 @@ size_flags_stretch_ratio = 19.49
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("3_s5g8n")
 theme_override_font_sizes/font_size = 30
-theme_override_styles/focus = ExtResource("4_7yvfd")
-theme_override_styles/hover_pressed = ExtResource("4_7yvfd")
-theme_override_styles/hover = ExtResource("5_dfy5j")
-theme_override_styles/pressed = ExtResource("4_7yvfd")
 theme_override_styles/normal = ExtResource("4_7yvfd")
+theme_override_styles/pressed = ExtResource("4_7yvfd")
+theme_override_styles/hover = ExtResource("5_dfy5j")
+theme_override_styles/hover_pressed = ExtResource("4_7yvfd")
+theme_override_styles/focus = ExtResource("4_7yvfd")
 text = "OPTIONS"
 
 [node name="leaderboards" type="Button" parent="HBoxContainer"]
@@ -83,12 +83,12 @@ size_flags_stretch_ratio = 19.49
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("3_s5g8n")
 theme_override_font_sizes/font_size = 30
-theme_override_styles/focus = ExtResource("4_7yvfd")
-theme_override_styles/disabled = ExtResource("4_7yvfd")
-theme_override_styles/hover_pressed = ExtResource("4_7yvfd")
-theme_override_styles/hover = ExtResource("5_dfy5j")
-theme_override_styles/pressed = ExtResource("4_7yvfd")
 theme_override_styles/normal = ExtResource("4_7yvfd")
+theme_override_styles/pressed = ExtResource("4_7yvfd")
+theme_override_styles/hover = ExtResource("5_dfy5j")
+theme_override_styles/hover_pressed = ExtResource("4_7yvfd")
+theme_override_styles/disabled = ExtResource("4_7yvfd")
+theme_override_styles/focus = ExtResource("4_7yvfd")
 text = "LEADERBOARDS"
 
 [node name="exit" type="Button" parent="HBoxContainer"]
@@ -99,12 +99,12 @@ size_flags_stretch_ratio = 19.49
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("3_s5g8n")
 theme_override_font_sizes/font_size = 30
-theme_override_styles/focus = ExtResource("4_7yvfd")
-theme_override_styles/disabled = ExtResource("4_7yvfd")
-theme_override_styles/hover_pressed = ExtResource("4_7yvfd")
-theme_override_styles/hover = ExtResource("5_dfy5j")
-theme_override_styles/pressed = ExtResource("4_7yvfd")
 theme_override_styles/normal = ExtResource("4_7yvfd")
+theme_override_styles/pressed = ExtResource("4_7yvfd")
+theme_override_styles/hover = ExtResource("5_dfy5j")
+theme_override_styles/hover_pressed = ExtResource("4_7yvfd")
+theme_override_styles/disabled = ExtResource("4_7yvfd")
+theme_override_styles/focus = ExtResource("4_7yvfd")
 text = "EXIT
 "
 
