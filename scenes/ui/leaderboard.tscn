@@ -49,6 +49,10 @@ theme_override_constants/separation = 200
 layout_mode = 2
 text = "#"
 
+[node name="Name" type="Label" parent="VBoxContainer/Headers"]
+layout_mode = 2
+text = "Name"
+
 [node name="Time" type="Label" parent="VBoxContainer/Headers"]
 layout_mode = 2
 size_flags_horizontal = 4

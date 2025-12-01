@@ -145,6 +145,29 @@ stream = ExtResource("5_s5g8n")
 volume_db = -30.0
 autoplay = true
 
+[node name="PlayerName" type="Label" parent="."]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 15.0
+offset_right = 66.0
+offset_bottom = 38.0
+text = "Name:"
+
+[node name="Name" type="LineEdit" parent="."]
+layout_mode = 0
+offset_left = 69.0
+offset_top = 14.0
+offset_right = 185.0
+offset_bottom = 45.0
+
+[node name="Save" type="Button" parent="."]
+layout_mode = 0
+offset_left = 105.0
+offset_top = 48.0
+offset_right = 149.0
+offset_bottom = 79.0
+text = "Save"
+
 [connection signal="ready" from="." to="." method="_on_ready"]
 [connection signal="pressed" from="HBoxContainer/play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="HBoxContainer/options" to="." method="_on_options_pressed"]
