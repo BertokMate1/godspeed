@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://bo3u2fs6q3awm"]
+[gd_scene load_steps=19 format=3 uid="uid://bo3u2fs6q3awm"]
 
 [ext_resource type="Script" uid="uid://k6bxev3bf0c5" path="res://scripts/main.gd" id="1_ocj2s"]
 [ext_resource type="Texture2D" uid="uid://q1ip52uhuxt8" path="res://assets/texture_07.png" id="2_ocj2s"]
@@ -7,6 +7,7 @@
 [ext_resource type="Shader" uid="uid://befg650a3l5pi" path="res://addons/vaporwavesky/vaporwave.gdshader" id="4_101mb"]
 [ext_resource type="Script" uid="uid://dv2ybi44o5wy8" path="res://scripts/ui/panel.gd" id="5_101mb"]
 [ext_resource type="PackedScene" uid="uid://17uiuansseg4" path="res://scenes/ui/escape_menu.tscn" id="5_ocj2s"]
+[ext_resource type="Script" uid="uid://cpkgte717xlaq" path="res://scripts/player/reticle.gd" id="6_101mb"]
 [ext_resource type="AudioStream" uid="uid://cugx7k84qn8t" path="res://assets/emotion engine (ft. kaiyko).mp3" id="6_din8e"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_h2yge"]
@@ -156,7 +157,7 @@ cull_mask = 1047553
 fov = 80.0
 
 [node name="gun" type="MeshInstance3D" parent="player/head/Camera3D"]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.28592908, -0.5461042, -0.6425762)
+transform = Transform3D(-0.065308325, -0.00092675, 0.9978647, 0.06676033, 0.99775505, 0.005295984, -0.99562943, 0.06696365, -0.065099835, 0.28592902, -0.5461042, -0.6425762)
 mesh = SubResource("CylinderMesh_jyhfs")
 skeleton = NodePath("../../..")
 
@@ -169,6 +170,30 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.638184, 0, 0)
 
 [node name="RayCast3D" type="RayCast3D" parent="player"]
 target_position = Vector3(0, 2, 0)
+
+[node name="Crosshair" type="Control" parent="player"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="Reticle" type="CenterContainer" parent="player/Crosshair"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("6_101mb")
 
 [node name="enemyspawntimer" type="Timer" parent="."]
 wait_time = 2.0
