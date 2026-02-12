@@ -292,25 +292,30 @@ func take_damage(amount):
 	if health <= 0:
 		die()
 
+# PLAYER DEATH LOGIC
 func die():
 	if is_dead:
 		return
 		
 	is_dead = true
 	
-	# Stop the timer
-	var survival_timer = get_tree().get_first_node_in_group("survival_timer")
-	if survival_timer and survival_timer.has_method("stop"):
-		survival_timer.stop()
-		
-	# Get survival time
+	# Retrieve survival time from timer
 	var timer_panel = get_tree().get_first_node_in_group("survival_timer")
 	var survival_time = 0.0
 	if timer_panel and timer_panel.has_method("get_survival_time"):
 		survival_time = timer_panel.get_survival_time()
-		
-	GlobalSettings.add_leaderboard_entry(survival_time)
 	
+	# Determine leaderboard type based on spawn mode
+	var spawn_manager = get_tree().get_first_node_in_group("spawn_manager")
+	if spawn_manager and spawn_manager.current_spawn_mode == spawn_manager.SpawnMode.WAVE_BASED:
+		var wave_count = 0
+		if spawn_manager.has_method("get_current_wave"):
+			wave_count = spawn_manager.get_current_wave()
+		elif "current_wave" in spawn_manager:
+			wave_count = spawn_manager.current_wave
+		GlobalSettings.add_wave_leaderboard_entry(wave_count)
+	else:
+		GlobalSettings.add_time_leaderboard_entry(survival_time)
 	
 	# Best time comparison
 	var best_time = survival_time
@@ -319,13 +324,8 @@ func die():
 		if previous_best > best_time:
 			best_time = previous_best
 		GlobalSettings.set_best_time(best_time)
-		
-# Get current best time for display
-	var leaderboard = GlobalSettings.get_leaderboard()
-	if leaderboard.size() > 0:
-		best_time = leaderboard[0]["time"]
 	
-	# Show end game screen
+	# Display end game screen
 	var end_screen_scene = preload("res://scenes/ui/endgamescreen.tscn")
 	var end_screen_instance = end_screen_scene.instantiate()
 	get_tree().root.add_child(end_screen_instance)
@@ -333,14 +333,15 @@ func die():
 	if end_screen_instance.has_method("show_screen"):
 		end_screen_instance.show_screen(survival_time, best_time)
 	
-	# Free the speed label
+	# Remove speed UI
 	if speed_label and speed_label.is_inside_tree():
 		speed_label.queue_free()
 	
-	# Disable player input
+	# Disable player control
 	set_process_input(false)
 	set_physics_process(false)
 
+# TRANSITION BACK TO MAIN MENU
 func transition_to_main_menu():
 	var transition_scene = preload("res://scenes/ui/scene_transition.tscn")
 	var transition = transition_scene.instantiate()

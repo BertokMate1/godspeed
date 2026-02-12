@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://b48mu7g3bb86s"]
+[gd_scene format=3 uid="uid://b48mu7g3bb86s"]
 
 [ext_resource type="Script" uid="uid://cfck4fke0qnqq" path="res://scripts/ui/leaderboard.gd" id="1_owmi3"]
 
-[node name="Leaderboard" type="Control"]
+[node name="Leaderboard" type="Control" unique_id=715472643]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,67 +11,75 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_owmi3")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="ColorRect" parent="." unique_id=1776433423]
 layout_mode = 0
 offset_right = 1154.0
 offset_bottom = 644.0
 color = Color(0, 0, 0, 1)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1414979358]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -245.0
+offset_left = -248.0
 offset_top = -44.5
-offset_right = 245.0
+offset_right = 248.0
 offset_bottom = 44.5
 grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_use_anchors_ = true
 
-[node name="Title" type="Label" parent="VBoxContainer"]
+[node name="Title" type="Label" parent="VBoxContainer" unique_id=978456990]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 text = "LEADERBOARD"
 
-[node name="Headers" type="HBoxContainer" parent="VBoxContainer"]
+[node name="Headers" type="HBoxContainer" parent="VBoxContainer" unique_id=1011706294]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
 theme_override_constants/separation = 200
 
-[node name="Rank" type="Label" parent="VBoxContainer/Headers"]
+[node name="Rank" type="Label" parent="VBoxContainer/Headers" unique_id=1038899415]
 layout_mode = 2
+size_flags_horizontal = 0
 text = "#"
 
-[node name="Name" type="Label" parent="VBoxContainer/Headers"]
+[node name="Name" type="Label" parent="VBoxContainer/Headers" unique_id=1986668547]
 layout_mode = 2
-text = "Name"
+text = "NAME"
 
-[node name="Time" type="Label" parent="VBoxContainer/Headers"]
+[node name="Time" type="Label" parent="VBoxContainer/Headers" unique_id=1736504456]
 layout_mode = 2
 size_flags_horizontal = 4
-text = "TIME"
+text = "TIME / WAVES"
 
-[node name="Date" type="Label" parent="VBoxContainer/Headers"]
-layout_mode = 2
-size_flags_horizontal = 8
-text = "DATE"
-
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer" unique_id=1467951055]
 layout_mode = 2
 
-[node name="Entries" type="VBoxContainer" parent="VBoxContainer/ScrollContainer"]
+[node name="Entries" type="VBoxContainer" parent="VBoxContainer/ScrollContainer" unique_id=251520022]
 layout_mode = 2
 
-[node name="ButtonsContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="ButtonsContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=736371147]
 layout_mode = 2
 
-[node name="Back" type="Button" parent="VBoxContainer/ButtonsContainer"]
+[node name="Back" type="Button" parent="VBoxContainer/ButtonsContainer" unique_id=1195712827]
 layout_mode = 2
 text = "BACK"
+
+[node name="TimeButton" type="Button" parent="VBoxContainer/ButtonsContainer" unique_id=2099780604]
+layout_mode = 2
+text = "Time based"
+
+[node name="WaveButton" type="Button" parent="VBoxContainer/ButtonsContainer" unique_id=2002957465]
+layout_mode = 2
+text = "Wave based"
+
+[connection signal="pressed" from="VBoxContainer/ButtonsContainer/Back" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="VBoxContainer/ButtonsContainer/TimeButton" to="." method="_on_time_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/ButtonsContainer/WaveButton" to="." method="_on_wave_button_pressed"]

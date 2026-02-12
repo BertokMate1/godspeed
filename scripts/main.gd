@@ -63,10 +63,15 @@ func _ready():
 	var player = get_tree().get_first_node_in_group("player")
 	if player and "mouse_sens" in player:
 		player.mouse_sens = GlobalSettings.mouse_sensitivity
+		
+	add_to_group("spawn_manager")
 	
 	#SETTINGS CHANGE LISTENING
 	GlobalSettings.spawn_mode_changed.connect(set_spawn_mode_from_string)
 	GlobalSettings.sensitivity_changed.connect(_on_sensitivity_changed)
+	
+func get_current_wave() -> int:
+	return current_wave
 
 func _on_sensitivity_changed(new_sensitivity):
 	var player = get_tree().get_first_node_in_group("player")
