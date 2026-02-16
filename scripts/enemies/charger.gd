@@ -8,11 +8,11 @@ var gravity = 9.8
 var damage = 100
 
 var player_node
+var timer_panel
 
 func _ready():
 	player_node = get_tree().get_first_node_in_group("player")
 	add_to_group("enemy")
-
 func _physics_process(delta):
 	# If player is found update the target position
 	if player_node:
@@ -39,8 +39,10 @@ func _physics_process(delta):
 				collider.take_damage(damage)
 
 func take_damage(amount):
+	timer_panel = get_tree().get_first_node_in_group("survival_timer")
 	health -= amount
 	if health <= 0:
+		timer_panel.add_time(2.0)  # add 2 seconds when this enemy dies
 		queue_free()
 
 func get_health():

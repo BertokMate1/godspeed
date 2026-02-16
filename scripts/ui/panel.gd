@@ -12,7 +12,7 @@ func _ready():
 
 func _process(delta) -> void:
 	if not is_stopped:
-		time += delta
+		time -= delta
 		seconds = int(time)
 		msec = int(fmod(time, 1) * 100)
 		
@@ -22,6 +22,9 @@ func _process(delta) -> void:
 func stop() -> void:
 	is_stopped = true
 	set_process(false)
+	
+func add_time(amount: float) -> void:
+	time += amount
 	
 func get_survival_time() -> float:
 	return time

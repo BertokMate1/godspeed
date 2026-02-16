@@ -23,6 +23,7 @@ var max_teleport_attempts = 20
 var projectile_scene = preload("res://scenes/enemies/energy_projectile.tscn")
 
 # References
+var timer_panel
 var player = null
 var initial_height_set = false
 
@@ -175,8 +176,11 @@ func is_position_in_bounds(check_position: Vector3) -> bool:
 	return horizontal_distance <= max_play_radius && valid_height
 
 func take_damage(amount):
+	timer_panel = get_tree().get_first_node_in_group("survival_timer")
+	
 	health -= amount
 	if health <= 0:
+		timer_panel.add_time(2.0) # add 2 seconds when this enemy dies
 		queue_free()
 
 func _on_attack_cooldown_timeout():
