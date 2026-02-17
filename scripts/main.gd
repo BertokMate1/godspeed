@@ -129,7 +129,7 @@ func _spawn_next_enemy_in_wave():
 		return
 	
 	if enemies_to_spawn_this_wave > 0:
-		var enemy = spawn_enemy()
+		var enemy = await spawn_enemy()
 		if enemy:
 			#ENEMY HEALTH SCALING
 			var health_multiplier = 1.0 + (current_wave - 1) * health_increase_per_wave
@@ -163,7 +163,7 @@ func spawn_enemy():
 	
 	add_child(enemy)
 	
-	var spawn_position = get_nav_valid_spawn_position()
+	var spawn_position = await get_nav_valid_spawn_position()
 	enemy.global_position = spawn_position
 	enemy.add_to_group("enemy")
 	
@@ -201,68 +201,94 @@ func get_nav_valid_spawn_position():
 	var player_position = Vector3.ZERO
 	if player:
 		player_position = player.global_position
-	
+
 	var attempts = 0
 	var valid_position_found = false
 	var spawn_position = Vector3.ZERO
-	
-	#Try multiple times to find a valid spawn position
+
+	# HOW MANY FRAMES WE'RE WILLING TO WAIT FOR NAV MAP TO SYNC
+	const WAIT_FRAMES := 8
+
+	# Try multiple times to find a valid spawn position
 	while attempts < max_spawn_attempts and not valid_position_found:
-		#Generate random position in arena
-		var random_angle = randf() * 2 * PI
+		# Generate random position in arena
+		var random_angle = randf() * TAU
 		var random_distance = randf_range(min_spawn_radius, max_spawn_radius)
-		
+
 		var proposed_position = spawn_center + Vector3(
 			cos(random_angle) * random_distance,
 			0,
 			sin(random_angle) * random_distance
 		)
-		
-		#Check if position is too close to player
+
+		# Check if position is too close to player
 		if player:
 			var distance_to_player = proposed_position.distance_to(player_position)
 			if distance_to_player < player_protected_radius:
 				attempts += 1
-				continue  #Try again if too close to player
-		
-		# Use navigation system to validate position
+				continue  # Try again if too close to player
+
+		# Use navigation system to validate position, but guard against "map not ready" errors
 		if navigation_region and navigation_region.has_method("get_navigation_map"):
 			var nav_map = navigation_region.get_navigation_map()
-			var correct_position = NavigationServer3D.map_get_closest_point(nav_map, proposed_position)
-			
-			#Double-check player distance after navigation correction
-			if player:
-				var corrected_distance_to_player = correct_position.distance_to(player_position)
-				if corrected_distance_to_player < player_protected_radius:
-					attempts += 1
-					continue  # Try again if corrected position is still too close
-			
-			correct_position.y += 1.0
-			spawn_position = correct_position
-			valid_position_found = true
+			# If nav_map may be valid but not yet iterated, wait a few frames for sync
+			var waited_frames = 0
+			var map_ready := false
+			while waited_frames < WAIT_FRAMES:
+				# nav_map might be RID(0) initially; check and break if valid AND iteration_id > 0
+				if nav_map and nav_map != RID():
+					var iter_id = NavigationServer3D.map_get_iteration_id(nav_map)
+					if iter_id > 0:
+						map_ready = true
+						break
+				# update nav_map reference each frame in case it becomes available later
+				nav_map = navigation_region.get_navigation_map()
+				waited_frames += 1
+				await get_tree().process_frame
+
+			# If the map is ready, use it; otherwise fall back to the raw proposed position
+			if map_ready:
+				# Safe call now
+				var correct_position = NavigationServer3D.map_get_closest_point(nav_map, proposed_position)
+				# Double-check player distance after navigation correction
+				if player:
+					var corrected_distance_to_player = correct_position.distance_to(player_position)
+					if corrected_distance_to_player < player_protected_radius:
+						attempts += 1
+						continue  # Try again if corrected position still too close
+
+				correct_position.y += 1.0
+				spawn_position = correct_position
+				valid_position_found = true
+			else:
+				# NAV MAP NOT READY AFTER WAIT — USE PROPOSED POSITION AS FALLBACK
+				spawn_position = proposed_position
+				valid_position_found = true
 		else:
 			# Fallback without navigation
 			spawn_position = proposed_position
 			valid_position_found = true
-		
+
 		attempts += 1
-	
-	# If we couldn't find a valid position after max attempts, 
-	# fall back to the original method without player protection
+
+	# If we couldn't find a valid position after max attempts,
+	# fall back to a final generated proposed_position (no nav)
 	if not valid_position_found:
-		var random_angle = randf() * 2 * PI
+		var random_angle = randf() * TAU
 		var random_distance = randf_range(min_spawn_radius, max_spawn_radius)
-		
 		var proposed_position = spawn_center + Vector3(
 			cos(random_angle) * random_distance,
 			0,
 			sin(random_angle) * random_distance
 		)
-		
+		# try snapping to nav map once more if available and ready
 		if navigation_region and navigation_region.has_method("get_navigation_map"):
 			var nav_map = navigation_region.get_navigation_map()
-			var correct_position = NavigationServer3D.map_get_closest_point(nav_map, proposed_position)
-			correct_position.y += 1.0
-			return correct_position
-	
+			if nav_map and nav_map != RID() and NavigationServer3D.map_get_iteration_id(nav_map) > 0:
+				var correct_position = NavigationServer3D.map_get_closest_point(nav_map, proposed_position)
+				correct_position.y += 1.0
+				return correct_position
+		# final fallback
+		return proposed_position
+
 	return spawn_position

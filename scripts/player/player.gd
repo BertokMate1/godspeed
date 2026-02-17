@@ -100,8 +100,12 @@ func _process(delta):
 			can_shoot_shotgun = true
 
 func _on_hitbox_body_entered(body):
-	if body.is_in_group("enemy"):
-		take_damage(100)  # Instant death from enemy contact
+	var dmg := 0
+	if "damage" in body:
+		dmg = body.damage
+		
+	if dmg > 0:
+		take_damage(dmg)
 
 # MOUSE MOVEMENT FOR CAMERA AND +-89 DEGREE SO IT CANT ROTATE FULLY AROUND
 func _input(event):
