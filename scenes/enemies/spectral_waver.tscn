@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://covihcvkxelir"]
+[gd_scene format=3 uid="uid://covihcvkxelir"]
 
 [ext_resource type="Script" uid="uid://da1luuxt6ve82" path="res://scripts/enemies/spectralwaver.gd" id="1_81ot2"]
 
@@ -11,18 +11,18 @@ material = SubResource("StandardMaterial3D_dtp8m")
 [sub_resource type="SphereShape3D" id="SphereShape3D_dtp8m"]
 radius = 0.531883
 
-[node name="spectral_waver" type="CharacterBody3D" groups=["enemy"]]
+[node name="spectral_waver" type="CharacterBody3D" unique_id=1580142965 groups=["enemy"]]
 script = ExtResource("1_81ot2")
 
-[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="." unique_id=1492886064]
 
-[node name="AttackCooldown" type="Timer" parent="."]
+[node name="AttackCooldown" type="Timer" parent="." unique_id=460381617]
 
-[node name="TeleportCooldown" type="Timer" parent="."]
-wait_time = 4.0
+[node name="TeleportCooldown" type="Timer" parent="." unique_id=245350086]
+wait_time = 7.0
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=904672873]
 mesh = SubResource("SphereMesh_ad8tl")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=435973245]
 shape = SubResource("SphereShape3D_dtp8m")

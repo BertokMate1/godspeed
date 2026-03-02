@@ -180,7 +180,7 @@ func take_damage(amount):
 	
 	health -= amount
 	if health <= 0:
-		timer_panel.add_time(2.0) # add 2 seconds when this enemy dies
+		timer_panel.add_time(4.0) # add 4 seconds when this enemy dies
 		queue_free()
 
 func _on_attack_cooldown_timeout():

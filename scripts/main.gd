@@ -18,7 +18,7 @@ var current_spawn_mode = SpawnMode.TIME_BASED
 #TIME SCALING MODE
 var min_spawn_time = 0.5
 var spawn_time_decrease = 0.5
-var time_between_decreases = 3.0
+var time_between_decreases = 2.5
 var difficulty_timer = 0.0
 
 #WAVE BASED MODE
