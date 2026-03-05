@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://dg4vjt0m355xo"]
+
+[ext_resource type="Script" uid="uid://745bkmai3avw" path="res://scripts/ui/hp_display.gd" id="1_dcd71"]
+
+[node name="HpDisplay" type="CanvasLayer" unique_id=1557936771]
+script = ExtResource("1_dcd71")
+
+[node name="Hearts" type="HBoxContainer" parent="." unique_id=958661638]
+offset_right = 40.0
+offset_bottom = 40.0

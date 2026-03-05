@@ -1,16 +1,16 @@
-[gd_scene load_steps=2 format=3 uid="uid://balkorwvccva5"]
+[gd_scene format=3 uid="uid://balkorwvccva5"]
 
 [ext_resource type="Script" uid="uid://d1crqo4wkr5gs" path="res://scripts/ui/endgamescreen.gd" id="1_w0wpi"]
 
-[node name="CanvasLayer" type="CanvasLayer"]
+[node name="CanvasLayer" type="CanvasLayer" unique_id=680068050]
 script = ExtResource("1_w0wpi")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ColorRect" type="ColorRect" parent="." unique_id=336905665]
 offset_right = 1155.0
 offset_bottom = 651.0
 color = Color(0.04755766, 0.047557645, 0.047557645, 0.15686275)
 
-[node name="GameOver" type="Label" parent="ColorRect"]
+[node name="GameOver" type="Label" parent="ColorRect" unique_id=297556038]
 layout_mode = 0
 offset_left = 369.0
 offset_top = 232.0
@@ -19,15 +19,15 @@ offset_bottom = 356.0
 theme_override_font_sizes/font_size = 50
 text = "ITS GAME OVER :(("
 
-[node name="SurvivalTime" type="Label" parent="ColorRect"]
+[node name="SurvivalTime" type="Label" parent="ColorRect" unique_id=952775121]
 layout_mode = 0
-offset_left = 89.0
-offset_top = 181.0
-offset_right = 190.0
-offset_bottom = 204.0
-text = "Survival time"
+offset_left = 90.0
+offset_top = 170.0
+offset_right = 204.0
+offset_bottom = 193.0
+text = "Survival time : "
 
-[node name="Restart" type="Label" parent="ColorRect"]
+[node name="Restart" type="Label" parent="ColorRect" unique_id=403626438]
 layout_mode = 0
 offset_left = 489.0
 offset_top = 332.0
@@ -35,10 +35,74 @@ offset_right = 630.0
 offset_bottom = 355.0
 text = "CLICK TO RESTART"
 
-[node name="BestTime" type="Label" parent="ColorRect"]
+[node name="BestTime" type="Label" parent="ColorRect" unique_id=1636236233]
+layout_mode = 0
+offset_left = 93.0
+offset_top = 144.0
+offset_right = 185.0
+offset_bottom = 173.0
+text = "BEST TIME : "
+
+[node name="WaveLabel" type="Label" parent="ColorRect" unique_id=279127913]
 layout_mode = 0
 offset_left = 90.0
-offset_top = 141.0
-offset_right = 178.0
-offset_bottom = 181.0
-text = "BEST TIME: "
+offset_top = 116.0
+offset_right = 206.0
+offset_bottom = 139.0
+text = "Highest wave : "
+
+[node name="KillsLabel" type="Label" parent="ColorRect" unique_id=1455026765]
+layout_mode = 0
+offset_left = 92.0
+offset_top = 194.0
+offset_right = 137.0
+offset_bottom = 217.0
+text = "Enemies Killed : "
+
+[node name="ShotsLabel" type="Label" parent="ColorRect" unique_id=1430382109]
+layout_mode = 0
+offset_left = 90.0
+offset_top = 217.0
+offset_right = 187.0
+offset_bottom = 240.0
+text = "Shots fired : "
+
+[node name="AccuracyLabel" type="Label" parent="ColorRect" unique_id=673243263]
+layout_mode = 0
+offset_left = 90.0
+offset_top = 239.0
+offset_right = 173.0
+offset_bottom = 262.0
+text = "Accuracy : "
+
+[node name="AvgKillLabel" type="Label" parent="ColorRect" unique_id=511717106]
+layout_mode = 0
+offset_left = 90.0
+offset_top = 333.0
+offset_right = 288.0
+offset_bottom = 356.0
+text = "Avg Shots fired/kill ratio : "
+
+[node name="AvgSpeedLabel" type="Label" parent="ColorRect" unique_id=65997930]
+layout_mode = 0
+offset_left = 91.0
+offset_top = 356.0
+offset_right = 183.0
+offset_bottom = 379.0
+text = "Avg speed : "
+
+[node name="ThreatDensityLabel" type="Label" parent="ColorRect" unique_id=897501178]
+layout_mode = 0
+offset_left = 90.0
+offset_top = 382.0
+offset_right = 130.0
+offset_bottom = 405.0
+text = "Threat density:"
+
+[node name="DeathCauseLabel" type="Label" parent="ColorRect" unique_id=760138624]
+layout_mode = 0
+offset_left = 446.0
+offset_top = 153.0
+offset_right = 555.0
+offset_bottom = 176.0
+text = "Death cause : "

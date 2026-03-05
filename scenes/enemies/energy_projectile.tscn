@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://dw6thfiyat2pe"]
+[gd_scene format=3 uid="uid://dw6thfiyat2pe"]
 
 [ext_resource type="Script" uid="uid://gx6hsnbs2eq7" path="res://scripts/enemies/energy_projectile.gd" id="1_lumvv"]
 
@@ -13,16 +13,16 @@ height = 0.2
 [sub_resource type="SphereShape3D" id="SphereShape3D_lumvv"]
 radius = 0.220689
 
-[node name="energy_projectile" type="Area3D" groups=["bullet"]]
+[node name="energy_projectile" type="Area3D" unique_id=557719929 groups=["bullet"]]
 script = ExtResource("1_lumvv")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1269347575]
 mesh = SubResource("SphereMesh_ivem7")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=618156398]
 shape = SubResource("SphereShape3D_lumvv")
 
-[node name="LifetimeTimer" type="Timer" parent="."]
+[node name="LifetimeTimer" type="Timer" parent="." unique_id=960730113]
 wait_time = 5.0
 one_shot = true
 

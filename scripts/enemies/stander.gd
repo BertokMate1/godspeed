@@ -6,7 +6,7 @@ extends CharacterBody3D
 # BASE STATS
 var health = 60
 var gravity = 9.8
-var damage = 0
+var damage = 1
 
 # REFERENCES
 var player_node
@@ -57,7 +57,7 @@ func _physics_process(delta):
 		var collider = collision.get_collider()
 		if collider and collider.is_in_group("player"):
 			if collider.has_method("take_damage"):
-				collider.take_damage(damage)
+				collider.take_damage(damage, "Stander")
 
 # TELEPORT IN FRONT OF PLAYER (PREDICTIVE + SAFE_ON_GROUND + FACE PLAYER)
 func _teleport_in_front_of_player():
@@ -122,6 +122,7 @@ func take_damage(amount):
 	if health <= 0:
 		if timer_panel and timer_panel.has_method("add_time"):
 			timer_panel.add_time(3.0) # ADD 3 SECONDS ON KILL
+		GlobalSettings.record_kill()
 		queue_free()
 
 func get_health():

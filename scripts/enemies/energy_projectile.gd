@@ -2,7 +2,7 @@ extends Area3D
 
 var speed = 20.0
 var direction = Vector3.ZERO
-var damage = 100
+var damage = 1
 
 @onready var lifetime = $LifetimeTimer.wait_time
 
@@ -20,7 +20,7 @@ func _physics_process(delta):
 func _on_body_entered(body):
 	if body.is_in_group("player"):
 		if body.has_method("take_damage"):
-			body.take_damage(damage)
+			body.take_damage(damage, "Spectral Weaver")
 		queue_free()
 	elif body.is_in_group("bullet"):
 		queue_free()

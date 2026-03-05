@@ -1,6 +1,7 @@
 extends Panel
 
 var time: float = 0.0
+var survival_time: float = 0.0
 var seconds: int = 0
 var msec: int = 0
 var is_stopped: bool = false
@@ -13,6 +14,7 @@ func _ready():
 func _process(delta) -> void:
 	if not is_stopped:
 		time -= delta
+		survival_time += delta
 		seconds = int(time)
 		msec = int(fmod(time, 1) * 100)
 		
@@ -27,10 +29,12 @@ func add_time(amount: float) -> void:
 	time += amount
 	
 func get_survival_time() -> float:
-	return time
+	return survival_time
+	
 
 func reset():
 	time = 0.0
+	survival_time = 0.0
 	seconds = 0
 	msec = 0
 	is_stopped = false

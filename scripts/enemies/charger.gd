@@ -8,7 +8,7 @@ var health = 30
 var base_speed = 7.5
 var speed = base_speed
 var gravity = 9.8
-var damage = 100
+var damage = 1
 
 # PLAYER REFERENCE
 var player_node
@@ -65,7 +65,7 @@ func _physics_process(delta):
 		var collider = collision.get_collider()
 		if collider and collider.is_in_group("player"):
 			if collider.has_method("take_damage"):
-				collider.take_damage(damage)
+				collider.take_damage(damage, "Charger")
 
 # DAMAGE HANDLING
 func take_damage(amount):
@@ -75,6 +75,7 @@ func take_damage(amount):
 		var timer_panel = get_tree().get_first_node_in_group("survival_timer")
 		if timer_panel and timer_panel.has_method("add_time"):
 			timer_panel.add_time(2.0)
+		GlobalSettings.record_kill()
 		queue_free()
 
 # SIMPLE ACCESSORS
