@@ -18,7 +18,7 @@ var pellet_count = 5
 var spread_angle = 0.05
 
 # PISTOL FIRE RATE
-var pistol_cooldown = 0.2
+var pistol_cooldown = 0.135
 var pistol_timer = 0.0
 var can_shoot_pistol = true
 

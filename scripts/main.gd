@@ -45,7 +45,7 @@ var player_protected_radius = 8.0
 var max_spawn_attempts = 20
 
 # SPAWN CAP
-var max_active_enemies = 20
+var max_active_enemies = 30
 
 # THREAT DENSITY SAMPLING
 var threat_density_timer = 0.0
